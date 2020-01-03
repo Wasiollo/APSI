@@ -1,0 +1,16 @@
+.toggleMenuStyle {
+  display: block;
+}
+
+.account-button {
+  background: url("/assets/acc.png") no-repeat;
+  width: 2.5rem ;
+  cursor: pointer;
+  border: none;;
+}
+
+.navbar .dropdown-menu-right {
+  right: 0;
+  left: auto !important;
+  margin-right: -1rem;
+}

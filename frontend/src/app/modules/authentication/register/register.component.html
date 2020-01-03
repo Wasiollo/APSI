@@ -1,0 +1,62 @@
+<div class="col-md-12 user-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <input type="text" formControlName="username" placeholder="Username" name="username"
+                       class="form-control" id="username">
+
+                <div class="error"
+                     *ngIf="registerForm.controls['username'].hasError('required') && registerForm.controls['username'].touched">
+                    Username is required!
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <input type="email" formControlName="email" placeholder="E-mail" name="email"
+                       class="form-control" id="email">
+                <div class="error"
+                     *ngIf="registerForm.controls['email'].hasError('required') && registerForm.controls['email'].touched">
+                    Email is required!
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <input type="password" formControlName="password" placeholder="Password" name="password"
+                       class="form-control" id="password">
+                <div class="error"
+                     *ngIf="registerForm.controls['password'].hasError('required') && registerForm.controls['password'].touched">
+                    Password is required!
+                </div>
+                <div class="error"
+                     *ngIf="registerForm.controls['password'].hasError('minLength') && registerForm.controls['password'].touched">
+                    Password must have at least 7 characters.
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <input type="password" formControlName="confirmPassword" placeholder="Confirm Password"
+                       name="confirmPassword"
+                       class="form-control" id="confirmPassword">
+                <div class="error"
+                     *ngIf="registerForm.controls['confirmPassword'].hasError('required') && registerForm.controls['confirmPassword'].touched">
+                    You need confirm password!
+                </div>
+            </div>
+
+            <div class="error col-md-12"
+                 *ngIf="registerForm.hasError('passwordsNotSame') && registerForm.controls['password'].touched && registerForm.controls['confirmPassword'].touched ">
+                Passwords are not same!
+            </div>
+        </div>
+        <div class="error" *ngIf="registerError">
+            <p>{{registerError}}</p>
+        </div>
+
+        <button class="btn btn-success col-md-12" [disabled]="registerForm.invalid">Sign Up</button>
+
+
+    </form>
+</div>

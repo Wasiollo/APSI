@@ -1,0 +1,44 @@
+<div class="custom-row">
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h2> User Details </h2>
+            </div>
+            <div class="card-body">
+                <div class="fixedHeight">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th class="d-none">Id</th>
+                            <th>UserName</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let user of users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                            <td class="d-none">{{user.id}}</td>
+                            <td>{{user.username}}</td>
+                            <td>{{user.email}}</td>
+                            <td><input type="checkbox" class="custom-checkbox" disabled [checked]="isUserAdmin(user)"></td>
+                            <td class="float-md-right">
+                                <button class="btn btn-danger" (click)="deleteUser(user)">
+                                    <i class="fa fa-warning"></i>  Delete
+                                </button>
+                                <button class="btn btn-success" (click)="editUser(user)" style="margin-left: 20px;">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="users.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5"
+                                [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+    <app-edit-user class="col-md-3 float-md-right" *ngIf="showEditUser" [userId]="this.userIdToEdit"
+                   (userChange)="updateUserListOnUserChange($event)"></app-edit-user>
+</div>

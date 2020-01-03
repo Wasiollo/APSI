@@ -1,0 +1,21 @@
+.bg-image {
+  background: url("/assets/back.jpg") no-repeat center center fixed black;
+  //background-image: linear-gradient(to bottom right, #66ffff, black, #004d00);
+  //background-color: #505050;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100%;
+  width: auto;
+}
+
+:host {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  margin-top: 3.5rem;
+  color: black;
+}

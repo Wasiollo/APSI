@@ -1,0 +1,59 @@
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  CONTAINER_BACKEND_IMAGE: ${CI_REGISTRY_IMAGE}/backend:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_BACKEND_IMAGE_LATEST: ${CI_REGISTRY_IMAGE}/backend:latest
+  CONTAINER_FRONTEND_IMAGE: ${CI_REGISTRY_IMAGE}/frontend:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_FRONTEND_IMAGE_LATEST: ${CI_REGISTRY_IMAGE}/frontend:latest
+
+stages:
+  - test
+  - build
+
+.verify: &verify
+  stage: test
+  script:
+    - cd backend
+    - mvn $MAVEN_CLI_OPTS verify
+
+
+verify:jdk11:
+  image: maven:3.6.2-jdk-11
+  cache:
+    paths:
+      - .m2/repository
+  <<: *verify
+
+build:backend:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+  script:
+    - cd backend
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t ${CONTAINER_BACKEND_IMAGE} .
+    - docker tag ${CONTAINER_BACKEND_IMAGE} ${CONTAINER_BACKEND_IMAGE_LATEST}
+    - docker push ${CONTAINER_BACKEND_IMAGE}
+    - docker push ${CONTAINER_BACKEND_IMAGE_LATEST}
+  only:
+    - master
+
+build:frontend:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+  script:
+    - cd frontend
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t ${CONTAINER_FRONTEND_IMAGE} .
+    - docker tag ${CONTAINER_FRONTEND_IMAGE} ${CONTAINER_FRONTEND_IMAGE_LATEST}
+    - docker push ${CONTAINER_FRONTEND_IMAGE}
+    - docker push ${CONTAINER_FRONTEND_IMAGE_LATEST}
+  only:
+    - master

@@ -1,0 +1,7 @@
+::ng-deep .error {
+  color: darkred;
+  text-align: center;
+}
+::ng-deep .ng-touched .ng-invalid{
+  border: 1px solid red;
+}

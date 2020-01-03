@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <div class="modal-title">
+        <div class="row justify-content-end">
+            <div class="col-6">
+                <button class="btn btn-light authentication_modal_header_button" [ngClass]="{'active': toLogin == true}"
+                        (click)="toLogin=true">Login
+                </button>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-light authentication_modal_header_button"
+                        [ngClass]="{'active': toLogin == false}" (click)="toLogin=false">Sign Up
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body">
+    <app-login *ngIf="toLogin" [modalRef]="modalReference" [navigationReason]="navigationReason"></app-login>
+    <app-register *ngIf="!toLogin" [modalRef]="modalReference"></app-register>
+</div>

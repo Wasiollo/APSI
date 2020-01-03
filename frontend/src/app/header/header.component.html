@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" [routerLink]="">Repo App</a>
+  <button class="navbar-toggler hidden-sm-up" type="button" (click)="toggleCollapsed()"
+          data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [ngbCollapse]="collapsed" class="collapse navbar-collapse" id="navbarsDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="home" routerLinkActive="active">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="repo" routerLinkActive="active">Repos</a>
+      </li>
+
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" [hidden]="tokenGetter() === null">
+        <div class="nav-link"> Session will expire in
+          <counter #counter></counter>
+        </div>
+      </li>
+      <li class="nav-item dropdown" ngbDropdown>
+        <a class="nav-link dropdown-toggle account-button" id="id01" ngbDropdownToggle></a>
+        <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="id01" ngbDropdownMenu>
+          <a class="dropdown-item text-light bg-dark" (click)="extendSession()">Extend Session</a>
+          <a class="dropdown-item text-light bg-dark" routerLink="authenticate/logout-user"><i class="fa fa-sign-out"></i> Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

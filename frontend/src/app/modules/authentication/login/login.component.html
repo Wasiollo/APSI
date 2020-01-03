@@ -1,0 +1,27 @@
+  <div class="col-md-12 login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+      <div class="form-group col-md-6">
+        <input type="text" class="form-control" ngClass="" placeholder="Username" formControlName="username" id="username" autocomplete="off">
+        <div class="error"
+             *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched">
+          Username is required!
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <input type="password" class="form-control" placeholder="Password" formControlName="password" id="pwd" autocomplete="off">
+        <div class="error"
+             *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched">
+          Password is required!
+        </div>
+      </div>
+      </div>
+      <div *ngIf="invalidLogin" class="error">
+        <p>Invalid credentials</p>
+      </div>
+      <div *ngIf="navigationReason !== undefined" class="error">
+        <p>{{navigationReason.authenticationReason}}</p>
+      </div>
+      <button class="btn btn-success col-md-12" [disabled]="loginForm.invalid">Login</button>
+    </form>
+  </div>

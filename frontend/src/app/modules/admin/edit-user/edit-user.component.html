@@ -1,0 +1,57 @@
+<div class="col-md-12 user-container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Edit User</h2>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+                <div class="d-none">
+                    <input type="text" formControlName="id" placeholder="id" name="id" class="form-control" id="id">
+                </div>
+                <div class="form-group">
+                    <input type="text" formControlName="username" placeholder="username" name="username"
+                           class="form-control" id="username">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" formControlName="email" placeholder="Email" name="email" class="form-control"
+                           id="email">
+                </div>
+
+                <div class="form-group d-none">
+                    <input type="text" formControlName="points" placeholder="Email" name="email" class="form-control"
+                           id="points">
+                </div>
+
+                <div class="form-group d-none">
+                    <input type="text" formControlName="userRoles" placeholder="Email" name="email" class="form-control"
+                           id="userRoles">
+                </div>
+
+                <div class="form-group d-none">
+                    <input type="text" formControlName="password" placeholder="Email" name="email" class="form-control"
+                           id="password">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-success form-control">
+                        <i class="fa fa-edit"></i> Update
+                    </button>
+                    <button *ngIf="isUserAdmin()" class="btn btn-warning form-control" type="button"
+                            (click)="revokeAdmin()">
+                         <i class="fa fa-graduation-cap rotated"></i> Revoke Admin
+                    </button>
+                    <button *ngIf="!isUserAdmin()" class="btn btn-warning form-control" type="button"
+                            (click)="grantAdmin()">
+                        <i class="fa fa-graduation-cap "></i> Grant Admin
+                    </button>
+                    <button class="btn btn-danger form-control" type="button" (click)="generatePassword()">
+                        <i class="fa fa-warning"></i> New Pass
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
