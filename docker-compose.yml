@@ -1,0 +1,41 @@
+version: "3.4"
+
+services:
+  frontend:
+      restart: always
+      build: frontend/.
+      ports:
+        - "3000:80"
+      depends_on:
+          - "backend"
+      networks:
+          - front-tier
+
+  backend:
+      restart: always
+      build: backend/.
+      ports:
+          - "8080:8080"
+      depends_on:
+          - "db"
+      networks:
+          - front-tier
+          - back-tier
+
+  db:
+    restart: always
+    image: postgres:10
+    container_name: db
+    environment:
+      - POSTGRES_USER=repo
+      - POSTGRES_PASSWORD=repo
+      - POSTGRES_DB=repo
+    ports:
+        - "5435:5432"
+    networks:
+        - back-tier
+
+networks:
+    front-tier:
+    back-tier:
+
