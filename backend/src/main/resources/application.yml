@@ -5,4 +5,24 @@ spring:
       ddl-auto: update
 
   profiles:
-    active: "dev"
+    active: ${profileActive}
+
+---
+
+spring:
+  profiles: dev
+
+---
+
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://db:5432/repo
+    username: repo
+    password: repo
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
