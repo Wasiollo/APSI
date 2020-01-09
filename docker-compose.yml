@@ -32,8 +32,14 @@ services:
       - POSTGRES_DB=repo
     ports:
         - "5435:5432"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
     networks:
         - back-tier
+
+volumes:
+  postgresql:
+    external: true
 
 networks:
     front-tier:

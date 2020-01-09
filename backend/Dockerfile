@@ -11,7 +11,7 @@ RUN dos2unix ./mvnw
 
 RUN chmod +x ./mvnw
 
-RUN ./mvnw install -DskipTests -Pprod
+RUN ./mvnw install -DskipTests -P release
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM adoptopenjdk:11-jdk-openj9
