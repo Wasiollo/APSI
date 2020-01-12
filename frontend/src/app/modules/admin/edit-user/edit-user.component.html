@@ -33,7 +33,7 @@
                            id="password">
                 </div>
 
-                <div *ngFor="let role of allRoles" class="form-group role-checkbox">
+                <div *ngFor="let role of this.allRoles" class="form-group role-checkbox">
                     <label>
                         <input type="checkbox" class="custom-checkbox" [checked]="isRoleChecked(role)" (change)="changeRoleStatus(role.roleName, $event)"> {{role.description}}
                     </label>
