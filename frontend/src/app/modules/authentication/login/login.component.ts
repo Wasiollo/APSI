@@ -5,6 +5,7 @@ import {ApiService} from '../../../core/api.service';
 import {AdminService} from '../../admin/admin.service';
 import {AuthenticationService} from '../authentication.service';
 import {User} from '../../../model/user.model';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
     selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     invalidLogin = false; //TODO rename to invalidCredentials
 
-    constructor(private formBuilder: FormBuilder, private router: Router, private adminService: AdminService, private authenticationService: AuthenticationService) {
+    constructor(private formBuilder: FormBuilder, private router: Router, private adminService: AdminService, private authenticationService: AuthenticationService, private toastr: ToastrService) {
     }
 
     onSubmit() {
@@ -47,6 +48,9 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(this.navigationReason !== undefined){
+            this.toastr.warning(this.navigationReason.authenticationReason);
+        }
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.compose([Validators.required])],
             password: ['', Validators.required]

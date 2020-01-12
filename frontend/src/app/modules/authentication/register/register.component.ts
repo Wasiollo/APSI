@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../authentication.service';
 import {CREATED} from "http-status-codes";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
     selector: 'app-register',
@@ -12,7 +13,7 @@ import {CREATED} from "http-status-codes";
 export class RegisterComponent implements OnInit {
     @Input() modalRef;
 
-    constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService) {
+    constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService, private toastr: ToastrService) {
     }
 
     registerForm: FormGroup;
@@ -36,12 +37,13 @@ export class RegisterComponent implements OnInit {
             .subscribe(data => {
                 if (data.status === CREATED) {
                     this.modalRef.componentInstance.switchLoginRegister();
-                    alert('User registered: ' + data.result.username);
+                    this.toastr.success('User registered: ' + data.result.username);
                 } else {
-                    console.log("Bad Status")
+                    this.toastr.error(data.message);
                 }
             },(err) => {
                 this.registerError = err.error;
+                this.toastr.error(err.error);
             });
     }
 

@@ -4,10 +4,7 @@ import com.apsi.repo.user.domain.UserRole;
 import com.apsi.repo.user.dto.RegisterUserDto;
 import com.apsi.repo.user.dto.UpdateUserPasswordDto;
 import com.apsi.repo.user.dto.UserDto;
-import com.apsi.repo.user.exception.BadPreviousPasswordException;
-import com.apsi.repo.user.exception.NoSuchUserException;
-import com.apsi.repo.user.exception.UserByMailExistsException;
-import com.apsi.repo.user.exception.UserExistsException;
+import com.apsi.repo.user.exception.*;
 import com.apsi.repo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/update_password")
-    public UpdateUserPasswordDto updatePassword(@RequestBody UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException {
+    public UpdateUserPasswordDto updatePassword(@RequestBody UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException, SamePasswordException {
         return userService.updatePassword(userDto);
     }
 

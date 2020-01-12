@@ -8,8 +8,7 @@ import com.apsi.repo.user.domain.UserRole;
 import com.apsi.repo.user.dto.RegisterUserDto;
 import com.apsi.repo.user.dto.UpdateUserPasswordDto;
 import com.apsi.repo.user.dto.UserDto;
-import com.apsi.repo.user.exception.NoSuchUserException;
-import com.apsi.repo.user.exception.UserByMailExistsException;
+import com.apsi.repo.user.exception.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.apsi.repo.user.exception.BadPreviousPasswordException;
-import com.apsi.repo.user.exception.UserExistsException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -114,12 +111,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UpdateUserPasswordDto updatePassword(UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException {
+    public UpdateUserPasswordDto updatePassword(UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException, SamePasswordException {
         User user = userDao.findById(userDto.getId()).orElseThrow(NoSuchUserException::new);
-        if (!bcryptEncoder.encode(userDto.getPassword()).equals(user.getPassword())) {
-            throw new BadPreviousPasswordException();
+        if (bcryptEncoder.matches(userDto.getPassword(), user.getPassword())) {
+            throw new SamePasswordException();
         }
-        user.setPassword(bcryptEncoder.encode(userDto.getNewPassword()));
+/*        if (bcryptEncoder.matches(userDto.getPassword(), user.getPassword())) { TODO add method to allow normal user change it's password with checking current password
+            throw new BadPreviousPasswordException();
+        }*/
+
+        user.setPassword(bcryptEncoder.encode(userDto.getPassword()));
         userDao.save(user);
         return userDto;
     }

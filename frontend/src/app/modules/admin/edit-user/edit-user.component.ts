@@ -78,8 +78,12 @@ export class EditUserComponent implements OnInit, OnChanges {
             this.adminService.updateUserPassword(this.user).subscribe(
                 data => {
                     if (data.status === OK) {
-                        alert('Password changed successfully');
+                        this.toastr.success('Password changed successfully');
+                    } else {
+                        this.toastr.error(data.message);
                     }
+                },(err) => {
+                    this.toastr.error(err.error.error);
                 }
             );
         }
@@ -93,7 +97,7 @@ export class EditUserComponent implements OnInit, OnChanges {
                         this.user.userRoles = data.result.userRoles;
                         this.userChange.emit(this.user);
                     } else {
-                        alert(data.message);
+                        this.toastr.error(data.message);
                     }
                 }
             );
@@ -107,7 +111,7 @@ export class EditUserComponent implements OnInit, OnChanges {
                         this.user.userRoles = data.result.userRoles;
                         this.userChange.emit(this.user);
                     } else {
-                        alert(data.message);
+                        this.toastr.error(data.message);
                     }
                 }
             );
@@ -121,15 +125,15 @@ export class EditUserComponent implements OnInit, OnChanges {
         return this.user.userRoles.some(r => r.roleName === role.roleName);
     }
 
-    changeRoleStatus(roleId: number, $event: Event) {
-        if(this.userHasRole(roleId)){
-            this.user.userRoles = this.user.userRoles.filter(r => r.id !== roleId);
+    changeRoleStatus(roleName: string, $event: Event) {
+        if(this.userHasRole(roleName)){
+            this.user.userRoles = this.user.userRoles.filter(r => r.roleName !== roleName);
         } else {
-            this.user.userRoles.push(this.allRoles.find(r=> r.id === roleId));
+            this.user.userRoles.push(this.allRoles.find(r=> r.roleName === roleName));
         }
     }
 
-    userHasRole(roleId: number): boolean {
-        return this.user.userRoles.some(r => r.id === roleId)
+    userHasRole(roleName: string): boolean {
+        return this.user.userRoles.some(r => r.roleName === roleName)
     }
 }

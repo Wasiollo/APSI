@@ -5,10 +5,7 @@ import com.apsi.repo.user.dto.RegisterUserDto;
 import com.apsi.repo.user.dto.UpdateUserPasswordDto;
 import com.apsi.repo.user.dto.UserDto;
 import com.apsi.repo.user.domain.User;
-import com.apsi.repo.user.exception.BadPreviousPasswordException;
-import com.apsi.repo.user.exception.NoSuchUserException;
-import com.apsi.repo.user.exception.UserByMailExistsException;
-import com.apsi.repo.user.exception.UserExistsException;
+import com.apsi.repo.user.exception.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +23,7 @@ public interface UserService {
 
     UserDto updateUser(UserDto userDto) throws NoSuchUserException;
 
-    UpdateUserPasswordDto updatePassword(UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException;
+    UpdateUserPasswordDto updatePassword(UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException, SamePasswordException;
 
     RegisterUserDto registerUser(RegisterUserDto registerUser) throws UserExistsException, UserByMailExistsException;
 
