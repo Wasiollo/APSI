@@ -10,8 +10,6 @@ import {Router} from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  adminLogged: Boolean;
-
   constructor(private router: Router, private adminService: AdminService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -19,13 +17,6 @@ export class HomeComponent implements OnInit {
     if (token === '' || token === undefined || token === null) {
       this.router.navigate(['authenticate']);
     }
-    this.authenticationService.checkAdminRole(token).subscribe(res => {
-      this.adminService.setAdmin(res.result);
-    });
-
-    this.adminService.change.subscribe(isAdmin => {
-      this.adminLogged = isAdmin;
-    });
   }
 
 }

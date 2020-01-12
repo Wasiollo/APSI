@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -68,5 +71,19 @@ public class AuthenticationController {
 
         UserDto user = userService.getUserByUserName(jwtTokenUtil.getUsernameFromToken(renewedToken));
         return new AuthToken(renewedToken, user.getUsername() ,user.getId() ) ;
+    }
+
+    @GetMapping(value = "/current")
+    @ResponseStatus(code = HttpStatus.OK)
+    public UserDto getCurrentUser() throws NoSuchUserException {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if(principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        return userService.getUserByUserName(username);
     }
 }

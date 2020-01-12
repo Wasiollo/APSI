@@ -23,6 +23,7 @@ export class AdminService {
     grantAdminUrl = this.usersUrl + '/grant-admin?userId=';
     revokeAdminUrl = this.usersUrl + '/revoke-admin?userId=';
     updateUserPasswordUrl = this.usersUrl + '/update_password';
+    getAllRolesUrl = this.usersUrl + '/roles';
 
     setAdmin(isAdmin) {
         this.isAdmin = isAdmin;
@@ -61,4 +62,7 @@ export class AdminService {
         return this.apiService.put(this.revokeAdminUrl + id, null);
     }
 
+    getAllRoles(): Observable<ApiResponse> {
+        return this.apiService.get(this.getAllRolesUrl);
+    }
 }

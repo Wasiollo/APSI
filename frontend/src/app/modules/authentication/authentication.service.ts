@@ -10,6 +10,11 @@ const baseUrl = environment.APIEndpoint;
 @Injectable()
 export class AuthenticationService {
 
+    public ROLE_ADMIN = "ROLE_ADMIN";
+    public ROLE_MOD = "ROLE_MOD";
+    public ROLE_EMPL = "ROLE_EMPL";
+    public ROLE_USER = "ROLE_USER";
+
     loggedUser: User;
 
     @Output() newTokenEmitter = new EventEmitter();
@@ -21,8 +26,8 @@ export class AuthenticationService {
     authUrl = baseUrl + '/auth';
     signUpUrl = this.authUrl + '/signup';
     authenticateUrl = this.authUrl + '/authenticate';
-    checkAdminRoleUrl = this.authUrl + '/checkAdminRole';
     renewTokenUrl = this.authUrl + '/renew';
+    currentUserUrl = this.authUrl + '/current';
 
     login(loginPayload): Observable<ApiResponse> {
         return this.apiService.post(this.authenticateUrl, loginPayload);
@@ -44,8 +49,14 @@ export class AuthenticationService {
         return this.apiService.post(this.signUpUrl, user);
     }
 
-    checkAdminRole(token: string): Observable<ApiResponse> {
-        return this.apiService.get(this.checkAdminRoleUrl + "/" + token);
+    hasRole(role: string): boolean {
+        if(this.loggedUser === undefined){
+            this.loggedUser = JSON.parse(window.localStorage.getItem('loggedUser'));
+        }
+        if (this.loggedUser === null || this.loggedUser === undefined){
+            return false;
+        }
+        return this.loggedUser.userRoles.some(r => r.roleName === role);
     }
 
     renewToken(token: string): Observable<ApiResponse> {
@@ -60,5 +71,9 @@ export class AuthenticationService {
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('loggedUser');
         this.userLogoutEmitter.emit();
+    }
+
+    getCurrentUser(){
+        return this.apiService.get(this.currentUserUrl);
     }
 }

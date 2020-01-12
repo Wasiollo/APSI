@@ -81,7 +81,6 @@ public class JwtTokenUtil implements Serializable {
         User user = userDao.findByUsername(subject).orElseThrow(NoSuchUserException::new);
 
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
         for(UserRole role : user.getUserRoles())
             roles.add(new SimpleGrantedAuthority(role.getRoleName()));
         claims.put(SCOPES, roles);

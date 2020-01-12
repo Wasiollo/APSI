@@ -17,4 +17,11 @@ public class UserRole {
     private Long id;
     @Column
     private String roleName;
+    @Column
+    private String description;
+
+    public UserRole(String roleName, String description) {
+        this.roleName = roleName;
+        this.description = description;
+    }
 }

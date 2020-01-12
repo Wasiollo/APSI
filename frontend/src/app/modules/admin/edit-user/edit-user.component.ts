@@ -5,6 +5,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AdminService} from '../admin.service';
 import {OK} from 'http-status-codes';
 
+import {ToastrService} from 'ngx-toastr';
+import {UserRole} from "../../../model/user.role.model";
+
 @Component({
     selector: 'app-edit-user',
     templateUrl: './edit-user.component.html',
@@ -15,11 +18,14 @@ export class EditUserComponent implements OnInit, OnChanges {
     @Output() userChange = new EventEmitter<User>();
     user: User;
     editForm: FormGroup;
+    private allRoles: UserRole[];
 
-    constructor(private formBuilder: FormBuilder, private router: Router, private adminService: AdminService) {
+    constructor(private formBuilder: FormBuilder, private router: Router, private adminService: AdminService, private toastr: ToastrService) {
     }
 
     ngOnInit() {
+
+        this.adminService.getAllRoles().subscribe(data => this.allRoles = data.result);
 
         this.editForm = this.formBuilder.group({
             id: [''],
@@ -48,19 +54,20 @@ export class EditUserComponent implements OnInit, OnChanges {
     onSubmit() {
         const editedUser = this.editForm.value;
         editedUser.password = '';
+        editedUser.userRoles = this.user.userRoles;
         this.adminService.updateUser(editedUser)
             .subscribe(
                 data => {
                     if (data.status === OK) {
-                        alert('User updated successfully.');
+                        this.toastr.success('User updated successfully.');
                         this.userChange.emit(editedUser);
                         this.user = editedUser;
                     } else {
-                        alert(data.message);
+                        this.toastr.error(data.message);
                     }
                 },
                 error => {
-                    alert(error);
+                    this.toastr.error(error);
                 });
     }
 
@@ -107,7 +114,22 @@ export class EditUserComponent implements OnInit, OnChanges {
     }
 
     isUserAdmin(): boolean {
-        return this.user.userRoles.filter(r => r.roleName = 'ROLE_ADMIN').length > 0
+        return this.user.userRoles.some(r => r.roleName === 'ROLE_ADMIN');
     }
 
+    isRoleChecked(role: UserRole): boolean {
+        return this.user.userRoles.some(r => r.roleName === role.roleName);
+    }
+
+    changeRoleStatus(roleId: number, $event: Event) {
+        if(this.userHasRole(roleId)){
+            this.user.userRoles = this.user.userRoles.filter(r => r.id !== roleId);
+        } else {
+            this.user.userRoles.push(this.allRoles.find(r=> r.id === roleId));
+        }
+    }
+
+    userHasRole(roleId: number): boolean {
+        return this.user.userRoles.some(r => r.id === roleId)
+    }
 }

@@ -1,5 +1,6 @@
 package com.apsi.repo.user.service;
 
+import com.apsi.repo.user.domain.UserRole;
 import com.apsi.repo.user.dto.RegisterUserDto;
 import com.apsi.repo.user.dto.UpdateUserPasswordDto;
 import com.apsi.repo.user.dto.UserDto;
@@ -34,4 +35,6 @@ public interface UserService {
     UserDto grantAdmin(Long userId) throws NoSuchUserException;
 
     UserDto revokeAdmin(Long userId) throws NoSuchUserException;
+
+    List<UserRole> getAllRoles();
 }

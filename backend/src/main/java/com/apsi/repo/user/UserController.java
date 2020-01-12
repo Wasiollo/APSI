@@ -1,5 +1,6 @@
 package com.apsi.repo.user;
 
+import com.apsi.repo.user.domain.UserRole;
 import com.apsi.repo.user.dto.RegisterUserDto;
 import com.apsi.repo.user.dto.UpdateUserPasswordDto;
 import com.apsi.repo.user.dto.UserDto;
@@ -30,6 +31,12 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public RegisterUserDto addUser(@RequestBody RegisterUserDto user) throws UserExistsException, UserByMailExistsException {
         return userService.registerUser(user);
+    }
+
+    @GetMapping("/roles")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<UserRole> getAllRoles(){
+        return userService.getAllRoles();
     }
 
     @PutMapping
@@ -66,6 +73,4 @@ public class UserController {
     public UserDto revokeAdmin(@RequestParam(name = "userId") Long userId) throws NoSuchUserException {
         return userService.revokeAdmin(userId);
     }
-
-
 }

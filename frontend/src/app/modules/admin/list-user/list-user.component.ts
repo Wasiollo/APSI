@@ -23,17 +23,12 @@ export class ListUserComponent implements OnInit {
     ngOnInit() {
         this.page = 1;
         this.pageSize = 9;
-        const token: string = window.localStorage.getItem('token');
-        this.authenticationService.checkAdminRole(token).toPromise().then(res => {
-            const adminLogged: boolean = res.result;
-            this.adminService.setAdmin(adminLogged);
+        if (this.authenticationService.hasRole(this.authenticationService.ROLE_ADMIN)) {
+            this.getUsers();
+        } else {
+            this.router.navigate(['home']);
+        }
 
-            if (adminLogged) {
-                this.getUsers();
-            } else {
-                this.router.navigate(['home']);
-            }
-        });
     }
 
     getUsers() {
@@ -63,6 +58,6 @@ export class ListUserComponent implements OnInit {
     }
 
     isUserAdmin(user: User): boolean {
-        return user.userRoles.filter(r => r.roleName = 'ROLE_ADMIN').length > 0
+        return user.userRoles.some(r => r.roleName === 'ROLE_ADMIN')
     }
 }

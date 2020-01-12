@@ -19,18 +19,24 @@
                 </div>
 
                 <div class="form-group d-none">
-                    <input type="text" formControlName="points" placeholder="Email" name="email" class="form-control"
+                    <input type="text" formControlName="points" placeholder="points" name="points" class="form-control"
                            id="points">
                 </div>
 
                 <div class="form-group d-none">
-                    <input type="text" formControlName="userRoles" placeholder="Email" name="email" class="form-control"
+                    <input type="text" formControlName="userRoles" placeholder="userRoles" name="userRoles" class="form-control"
                            id="userRoles">
                 </div>
 
                 <div class="form-group d-none">
-                    <input type="text" formControlName="password" placeholder="Email" name="email" class="form-control"
+                    <input type="text" formControlName="password" placeholder="password" name="password" class="form-control"
                            id="password">
+                </div>
+
+                <div *ngFor="let role of allRoles" class="form-group role-checkbox">
+                    <label>
+                        <input type="checkbox" class="custom-checkbox" [checked]="isRoleChecked(role)" (change)="changeRoleStatus(role.id, $event)"> {{role.description}}
+                    </label>
                 </div>
 
                 <div class="form-group">

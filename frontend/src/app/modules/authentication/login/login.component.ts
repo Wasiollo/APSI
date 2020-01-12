@@ -33,15 +33,13 @@ export class LoginComponent implements OnInit {
             if (data.status === 200) {
                 window.localStorage.setItem('token', data.result.token);
                 this.modalRef.close();
-                const loggedUser = new User();
-                loggedUser.id = data.result.userId;
-                loggedUser.username = loginPayload.username;
-                this.authenticationService.setLoggedUser(loggedUser);
-                this.authenticationService.checkAdminRole(data.result.token).toPromise().then(res => {
-                    this.adminService.setAdmin(res.result);
-                });
-                this.authenticationService.emitNewToken();
-                this.router.navigate(['home']);
+                this.authenticationService.getCurrentUser().subscribe(
+                    res => {
+                        this.authenticationService.setLoggedUser(res.result);
+                        this.authenticationService.emitNewToken();
+                        this.router.navigate(['home']);
+                    }
+                );
             } else {
                 this.invalidLogin = true;
             }

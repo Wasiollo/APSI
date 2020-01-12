@@ -15,25 +15,29 @@ import java.util.stream.StreamSupport;
 
 @Configuration
 public class RolesConfig {
-    public static final String ADMIN_ROLE = "ROLE_ADMIN";
+    public static final UserRole ROLE_ADMIN = new UserRole("ROLE_ADMIN", "Administrator");
+    public static final UserRole ROLE_MOD = new UserRole("ROLE_MOD", "Moderator");
+    public static final UserRole ROLE_EMPL = new UserRole("ROLE_EMPL", "Employee");
+    public static final UserRole ROLE_USER = new UserRole("ROLE_USER", "User");
 
-    private static final List<String> ROLES = List.of(ADMIN_ROLE);
+
+    private static final List<UserRole> ROLES = List.of(ROLE_ADMIN, ROLE_MOD, ROLE_EMPL, ROLE_USER);
 
     @Bean
     CommandLineRunner init(RoleDao roleDao, UserService userService) {
         return args -> {
-            if (StreamSupport.stream(roleDao.findAll().spliterator(), false).count() < ROLES.size()) {
-                for (String role : ROLES) {
-                    UserRole newRole = new UserRole();
-                    newRole.setRoleName(role);
-                    roleDao.save(newRole);
-                }
-            }
+            List<UserRole> rolesFromDb = (List<UserRole>) roleDao.findAll();
+            ROLES.stream().filter(r ->
+                    rolesFromDb.stream().noneMatch(dbr -> dbr.getRoleName().equals(r.getRoleName()))
+            ).forEach(roleDao::save);
+
             UserDto adminUser = new UserDto("admin", "admin", "admin@admin.pl");
-            adminUser.setUserRoles(StreamSupport.stream(roleDao.findAll().spliterator(), false).collect(Collectors.toList()));
+            adminUser.setUserRoles(List.of(
+                    roleDao.findByRoleName(ROLE_ADMIN.getRoleName()).orElseThrow(),
+                    roleDao.findByRoleName(ROLE_USER.getRoleName()).orElseThrow()
+            ));
             User savedAdminUser = userService.save(adminUser);
             System.out.println(savedAdminUser);
-
         };
     }
 }

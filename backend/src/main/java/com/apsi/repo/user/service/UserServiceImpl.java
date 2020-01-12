@@ -28,6 +28,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.apsi.repo.user.config.RolesConfig.ROLE_USER;
+
 @Transactional
 @Service(value = "userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDto grantAdmin(Long userId) throws NoSuchUserException {
         User user = userDao.findById(userId).orElseThrow(NoSuchUserException::new);
-        UserRole adminRole = roleDao.findByRoleName(RolesConfig.ADMIN_ROLE).get();
+        UserRole adminRole = roleDao.findByRoleName(RolesConfig.ROLE_ADMIN.getRoleName()).get();
         user.getUserRoles().add(adminRole);
         return mapUserToDto(user);
     }
@@ -101,9 +103,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDto revokeAdmin(Long userId) throws NoSuchUserException {
         User user = userDao.findById(userId).orElseThrow(NoSuchUserException::new);
-        UserRole adminRole = roleDao.findByRoleName(RolesConfig.ADMIN_ROLE).get();
+        UserRole adminRole = roleDao.findByRoleName(RolesConfig.ROLE_ADMIN.getRoleName()).get();
         user.getUserRoles().remove(adminRole);
         return mapUserToDto(user);
+    }
+
+    @Override
+    public List<UserRole> getAllRoles() {
+        return (List<UserRole>) roleDao.findAll();
     }
 
     @Override
@@ -125,8 +132,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userDao.findByEmail(registerUser.getEmail()).isPresent()){
             throw new UserByMailExistsException();
         }
-
-        this.save(new UserDto(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail()));
+        UserDto userToRegister = new UserDto(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail());
+        userToRegister.setUserRoles(List.of(ROLE_USER));
+        this.save(userToRegister);
 
         return registerUser;
     }
@@ -139,7 +147,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private List<SimpleGrantedAuthority> getAuthority(User user) {
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
         for(UserRole role : user.getUserRoles())
             roles.add(new SimpleGrantedAuthority(role.getRoleName()));
         return roles;
