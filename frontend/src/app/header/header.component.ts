@@ -69,4 +69,8 @@ export class HeaderComponent implements OnInit {
         });
     }
 
+    hasRole(role: string): Boolean {
+        return this.authenticationService.hasRole(role);
+    }
+
 }

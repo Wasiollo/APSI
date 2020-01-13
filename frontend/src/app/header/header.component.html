@@ -11,10 +11,10 @@
         <a class="nav-link" routerLink="home" routerLinkActive="active">Home</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="this.authenticationService.hasRole(this.authenticationService.ROLE_USER)" class="nav-link" routerLink="repo" routerLinkActive="active">Repos</a>
+        <a *ngIf="hasRole('ROLE_USER')" class="nav-link" routerLink="repo" routerLinkActive="active">Repos</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="this.authenticationService.hasRole(this.authenticationService.ROLE_ADMIN)" class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Console</a>
+        <a *ngIf="hasRole('ROLE_ADMIN')" class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Console</a>
       </li>
 
     </ul>

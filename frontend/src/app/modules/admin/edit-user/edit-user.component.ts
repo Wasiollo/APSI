@@ -18,7 +18,7 @@ export class EditUserComponent implements OnInit, OnChanges {
     @Output() userChange = new EventEmitter<User>();
     user: User;
     editForm: FormGroup;
-    private allRoles: UserRole[];
+    allRoles: UserRole[];
 
     constructor(private formBuilder: FormBuilder, private router: Router, private adminService: AdminService, private toastr: ToastrService) {
     }
