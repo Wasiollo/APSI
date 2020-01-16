@@ -34,4 +34,6 @@ public interface UserService {
     UserDto revokeAdmin(Long userId) throws NoSuchUserException;
 
     List<UserRole> getAllRoles();
+
+    User getCurrentUser();
 }

@@ -21,6 +21,7 @@ export class ListUserComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.users = [];
         this.page = 1;
         this.pageSize = 9;
         if (this.authenticationService.hasRole(this.authenticationService.ROLE_ADMIN)) {

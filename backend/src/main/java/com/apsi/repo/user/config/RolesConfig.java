@@ -16,12 +16,12 @@ import java.util.stream.StreamSupport;
 @Configuration
 public class RolesConfig {
     public static final UserRole ROLE_ADMIN = new UserRole("ROLE_ADMIN", "Administrator");
-    public static final UserRole ROLE_MOD = new UserRole("ROLE_MOD", "Moderator");
-    public static final UserRole ROLE_EMPL = new UserRole("ROLE_EMPL", "Employee");
     public static final UserRole ROLE_USER = new UserRole("ROLE_USER", "User");
+    public static final UserRole ROLE_TESTER = new UserRole("ROLE_TESTER", "Tester");
+    public static final UserRole ROLE_TEST_LEADER = new UserRole("ROLE_TEST_LEADER", "Tests Leader");
 
 
-    private static final List<UserRole> ROLES = List.of(ROLE_ADMIN, ROLE_MOD, ROLE_EMPL, ROLE_USER);
+    private static final List<UserRole> ROLES = List.of(ROLE_ADMIN, ROLE_USER, ROLE_TESTER, ROLE_TEST_LEADER);
 
     @Bean
     CommandLineRunner init(RoleDao roleDao, UserService userService) {

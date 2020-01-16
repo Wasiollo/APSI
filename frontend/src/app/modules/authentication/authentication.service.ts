@@ -11,9 +11,9 @@ const baseUrl = environment.APIEndpoint;
 export class AuthenticationService {
 
     public ROLE_ADMIN = "ROLE_ADMIN";
-    public ROLE_MOD = "ROLE_MOD";
-    public ROLE_EMPL = "ROLE_EMPL";
     public ROLE_USER = "ROLE_USER";
+    public ROLE_TESTER = "ROLE_TESTER";
+    public ROLE_TEST_LEADER = "ROLE_TEST_LEADER";
 
     loggedUser: User;
 

@@ -118,10 +118,16 @@ export class EditUserComponent implements OnInit, OnChanges {
     }
 
     isUserAdmin(): boolean {
+        if (this.user === undefined) {
+            return false;
+        }
         return this.user.userRoles.some(r => r.roleName === 'ROLE_ADMIN');
     }
 
     isRoleChecked(role: UserRole): boolean {
+        if (this.user === undefined) {
+            return false;
+        }
         return this.user.userRoles.some(r => r.roleName === role.roleName);
     }
 

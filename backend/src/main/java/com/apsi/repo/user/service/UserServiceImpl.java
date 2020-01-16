@@ -12,6 +12,7 @@ import com.apsi.repo.user.exception.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -108,6 +109,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<UserRole> getAllRoles() {
         return (List<UserRole>) roleDao.findAll();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if(principal instanceof UserDetails){
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return userDao.findByUsername(username).orElseThrow();
     }
 
     @Override
