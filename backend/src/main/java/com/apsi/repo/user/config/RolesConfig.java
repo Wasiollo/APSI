@@ -34,7 +34,8 @@ public class RolesConfig {
             UserDto adminUser = new UserDto("admin", "admin", "admin@admin.pl");
             adminUser.setUserRoles(List.of(
                     roleDao.findByRoleName(ROLE_ADMIN.getRoleName()).orElseThrow(),
-                    roleDao.findByRoleName(ROLE_USER.getRoleName()).orElseThrow()
+                    roleDao.findByRoleName(ROLE_USER.getRoleName()).orElseThrow(),
+                    roleDao.findByRoleName(ROLE_TESTER.getRoleName()).orElseThrow()
             ));
             User savedAdminUser = userService.save(adminUser);
             System.out.println(savedAdminUser);

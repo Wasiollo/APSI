@@ -1,0 +1,33 @@
+<div class="custom-row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2> Test details {{currentTest.name}} </h2>
+            </div>
+            <div class="card-body">
+
+              <div style="margin-bottom: 20px;">
+                <button class="btn btn-info" (click)="returnToTestsList()"><i class="fa fa-backward"></i> Tests list </button>
+              </div>
+              <div class="row d-none">
+                <b>Test ID:</b> {{currentTest.id}}
+              </div>
+              <div class="row">
+                <b>Name:</b> {{currentTest.name}}
+              </div>
+              <div class="row">
+                <b>Description:</b> {{currentTest.description}}
+              </div>
+              <div class="row">
+                <b>Update date:</b> {{currentTest.updateDate | date:'yyyy-MM-dd hh:mm:ss'}}
+              </div>
+              <div class="row">
+                <b>Test creator:</b> {{currentTest.owner.username}}
+              </div>
+              <div class="row">
+                <b>Test status:</b> {{currentTest.status}}
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

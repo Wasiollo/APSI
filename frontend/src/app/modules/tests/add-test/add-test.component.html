@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <div class="modal-title">
+    <h2>Add Test</h2>
+  </div>
+  <button type="button" class="close" aria-label="Close" (click)="this.modalRef.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="col-md-12">
+    <form [formGroup]="testForm" (ngSubmit)="this.onSubmit()">
+      <div class="form-group">
+        <input type="text" formControlName="name" placeholder="Test Name" name="name"
+               class="form-control">
+
+        <div class="error"
+             *ngIf="testForm.controls['name'].hasError('required') && testForm.controls['name'].touched">
+          Test Name is required!
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" formControlName="description" placeholder="Description" name="description"
+               class="form-control">
+
+        <div class="error"
+             *ngIf="testForm.controls['description'].hasError('required') && testForm.controls['description'].touched">
+          Description is required!
+        </div>
+      </div>
+
+      <button class="btn btn-success col-md-12" [disabled]="testForm.invalid">Add Test</button>
+    </form>
+  </div>
+</div>

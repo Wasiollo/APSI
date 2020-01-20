@@ -1,16 +1,55 @@
 <div class="custom-row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h2> Tests list </h2>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-12">
-            Test list works !
-          </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2> Tests list </h2>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-success" (click)="addTest()">
+                    <i class="fa fa-plus"></i> Add Test
+                </button>
+                <div class="fixedHeight" style="margin-top: 20px;">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="1" class="d-none">Id</th>
+                            <th colspan="1">Name</th>
+                            <th colspan="1">Creator</th>
+                            <th colspan="1">Update date</th>
+                            <th colspan="1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let test of tests | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                            <td colspan="1" class="d-none">{{test.id}}</td>
+                            <td colspan="1">{{test.name}}</td>
+                            <td colspan="1">{{test.owner.username}}</td>
+                            <td colspan="1">{{test.updateDate | date:'yyyy-MM-dd hh:mm:ss'}}</td>
+                            <td class="float-md-right" colspan="1">
+                                <div class="row">
+                                    <div class="dropdown" ngbDropdown>
+                                        <a class="btn btn-secondary dropdown-toggle" type="button"
+                                           id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false" ngbDropdownToggle>{{test.status}}</a>
+                                        <div class="dropdown-menu dropdown-menu-right bg-dark"
+                                             aria-labelledby="statusDropdownButton" ngbDropdownMenu>
+                                            <a class="dropdown-item" *ngFor="let testStatus of testStatuses"
+                                               (click)="setTestStatus(test.id, testStatus)">{{testStatus}}</a>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-info" (click)="showTestDetails(test.id)"
+                                            style="margin-left: 20px;">
+                                        <i class="fa fa-info-circle"></i> Details
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ngb-pagination [collectionSize]="tests.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5"
+                                [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

@@ -16,10 +16,10 @@ import {HIGHLIGHT_OPTIONS} from 'ngx-highlightjs';
 import sql from 'highlight.js/lib/languages/sql';
 import {AuthenticationService} from './modules/authentication/authentication.service';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CommonModule} from '@angular/common';
 
-import { ToastrModule } from 'ngx-toastr';
+import {ToastrModule} from 'ngx-toastr';
 
 export function hljsLanguages() {
     return [

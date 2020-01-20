@@ -1,15 +1,92 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {NavigationExtras, Router} from "@angular/router";
+import {AuthenticationService} from "../../authentication/authentication.service";
+import {Test} from "../model/test.model";
+import {TestService} from "../service/test.service";
+import {ToastrService} from "ngx-toastr";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AddTestComponent} from "../add-test/add-test.component";
 
 @Component({
-  selector: 'app-tests-list',
-  templateUrl: './tests-list.component.html',
-  styleUrls: ['./tests-list.component.scss']
+    selector: 'app-tests-list',
+    templateUrl: './tests-list.component.html',
+    styleUrls: ['./tests-list.component.scss']
 })
 export class TestsListComponent implements OnInit {
 
-  constructor() { }
+    tests: Test[];
+    page: number;
+    pageSize: number;
+    testStatuses: string[];
 
-  ngOnInit() {
-  }
+    constructor(private router: Router, private testService: TestService, private authenticationService: AuthenticationService, private modalService: NgbModal, private toastr: ToastrService) {
+    }
+
+    ngOnInit() {
+        this.tests = [];
+        this.testStatuses = [];
+        this.page = 1;
+        this.pageSize = 9;
+        if (this.authenticationService.hasRole((this.authenticationService.ROLE_TEST_LEADER))) {
+            this.getAllTests();
+        } else if (this.authenticationService.hasRole(this.authenticationService.ROLE_TESTER)) {
+            this.getTests();
+        } else {
+            this.router.navigate(['home']);
+        }
+        this.getTestStatuses();
+
+        this.testService.testAdded.subscribe(test => {
+            this.tests.unshift(test);
+        });
+
+
+    }
+
+    getTests() {
+        this.testService.getTests()
+            .subscribe(data => {
+                this.tests = data.result;
+            });
+    }
+
+    private getTestStatuses() {
+        this.testService.getTestStatuses()
+            .subscribe(data => {
+                this.testStatuses = data.result;
+            });
+    }
+
+    getAllTests() {
+        this.testService.getAllTests()
+            .subscribe(data => {
+                this.tests = data.result;
+            });
+    }
+
+    showTestDetails(id: number) {
+        const navigationExtras: NavigationExtras = {
+            state: {
+                testId: id
+            }
+        };
+        this.router.navigate(['tests/test-details'], navigationExtras);
+    }
+
+    setTestStatus(id: number, testStatus: string) {
+        // TODO set updateDate to now in view ? Reconsider (maybe only on changes in Details view)
+        let testToChange = this.tests.find(t => t.id === id);
+        testToChange.status = testStatus;
+        this.testService.setTestStatus(testToChange).subscribe(data => {
+            let testIndex = this.tests.findIndex(t => t.id === id);
+            this.tests[testIndex] = data.result;
+            this.toastr.success("Status changed to " + testStatus)
+        });
+    }
+
+    addTest() {
+        const modalRef = this.modalService.open(AddTestComponent);
+        modalRef.componentInstance.modalRef = modalRef;
+    }
 
 }

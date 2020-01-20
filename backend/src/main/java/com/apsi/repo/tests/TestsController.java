@@ -1,6 +1,8 @@
 package com.apsi.repo.tests;
 
 import com.apsi.repo.tests.domain.Test;
+import com.apsi.repo.tests.domain.TestStatus;
+import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.tests.service.TestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,20 @@ public class TestsController {
         return testsService.getTests();
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public Test getTest(@PathVariable Long id) {
+        return testsService.getTest(id);
+    }
+
+    @GetMapping("/statuses")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public List<TestStatus> getTestStatuses() {
+        return testsService.getTestStatuses();
+    }
+
     @GetMapping("/all")
     @ResponseStatus(code = HttpStatus.OK)
     @Secured("ROLE_TEST_LEADER")
@@ -38,7 +54,14 @@ public class TestsController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
-    public Test createTest(Test toCreate) {
-        return testsService.createTest(toCreate);
+    public Test createTest(@RequestBody TestDto dto) {
+        return testsService.createTest(dto);
+    }
+
+    @PutMapping
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public Test updateTest(@RequestBody Test toUpdate) {
+        return testsService.updateTest(toUpdate);
     }
 }

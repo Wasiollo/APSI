@@ -2,11 +2,15 @@ package com.apsi.repo.tests.service;
 
 import com.apsi.repo.tests.dao.TestDao;
 import com.apsi.repo.tests.domain.Test;
+import com.apsi.repo.tests.domain.TestStatus;
+import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.user.domain.User;
 import com.apsi.repo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -33,8 +37,27 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public Test createTest(Test toCreate) {
-        //TODO creation
-        return null;
+    public Test createTest(TestDto dto) {
+        Test toCreate = new Test(dto);
+        toCreate.setStatus(TestStatus.NEW);
+        toCreate.setUpdateDate(LocalDateTime.now());
+        toCreate.setOwner(userService.getCurrentUser());
+        return testDao.save(toCreate);
+    }
+
+    @Override
+    public Test updateTest(Test toUpdate) {
+        toUpdate.setUpdateDate(LocalDateTime.now());
+        return testDao.save(toUpdate);
+    }
+
+    @Override
+    public List<TestStatus> getTestStatuses() {
+        return Arrays.asList(TestStatus.values());
+    }
+
+    @Override
+    public Test getTest(Long id) {
+        return testDao.findById(id).orElseThrow();
     }
 }
