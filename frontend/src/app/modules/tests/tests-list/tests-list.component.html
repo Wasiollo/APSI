@@ -47,7 +47,7 @@
                                         <a class="btn btn-secondary dropdown-toggle" type="button"
                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                            aria-expanded="false" ngbDropdownToggle>{{test.status}}</a>
-                                        <div class="dropdown-menu dropdown-menu-right bg-dark"
+                                        <div class="dropdown-menu dropdown-menu-right bg-secondary"
                                              aria-labelledby="statusDropdownButton" ngbDropdownMenu>
                                             <a class="dropdown-item" *ngFor="let testStatus of testStatuses"
                                                (click)="setTestStatus(test.id, testStatus)">{{testStatus}}</a>
