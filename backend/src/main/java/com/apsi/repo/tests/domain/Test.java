@@ -1,5 +1,6 @@
 package com.apsi.repo.tests.domain;
 
+import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.user.domain.User;
 import lombok.Data;
