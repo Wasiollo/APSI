@@ -3,8 +3,6 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import {TestService} from "../service/test.service";
 import {CREATED} from "http-status-codes";
 import {ToastrService} from "ngx-toastr";
-import {TestStep} from "../model/test-step.model";
-import {Test} from "../model/test.model";
 
 @Component({
     selector: 'app-add-test',
