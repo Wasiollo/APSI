@@ -19,7 +19,7 @@ public class Document {
     private String filename;
     @Lob
     @Column(length = 10000000)
-    private byte[] data;
+    private String data;
 
     public Document(DocumentDto dto) {
         filename = dto.getFilename();

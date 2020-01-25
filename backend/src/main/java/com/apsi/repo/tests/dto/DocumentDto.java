@@ -7,5 +7,5 @@ public class DocumentDto {
 
     private Long testId;
     private String filename;
-    private byte[] data;
+    private String data;
 }

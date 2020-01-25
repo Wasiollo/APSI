@@ -1,5 +1,6 @@
 package com.apsi.repo.tests.service;
 
+import com.apsi.repo.tests.domain.Document;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
 import com.apsi.repo.tests.dto.DocumentDto;
@@ -30,4 +31,6 @@ public interface TestsService {
     void createDocument(Long testId, List<DocumentDto> dtos);
 
     void deleteDocument(Long documentId);
+
+    Document getDocument(Long documentId);
 }

@@ -1,5 +1,6 @@
 package com.apsi.repo.tests;
 
+import com.apsi.repo.tests.domain.Document;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
 import com.apsi.repo.tests.dto.DocumentDto;
@@ -99,5 +100,12 @@ public class TestsController {
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
     public void deleteDocument(@PathVariable Long id, @PathVariable Long documentId) {
         testsService.deleteDocument(documentId);
+    }
+
+    @GetMapping("/{id}/documents/{documentId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public Document getDocument(@PathVariable Long id, @PathVariable Long documentId) {
+        return testsService.getDocument(documentId);
     }
 }

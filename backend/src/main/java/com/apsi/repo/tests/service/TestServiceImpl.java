@@ -1,7 +1,9 @@
 package com.apsi.repo.tests.service;
 
+import com.apsi.repo.exception.DocumentNotFoundException;
 import com.apsi.repo.tests.dao.DocumentDao;
 import com.apsi.repo.tests.dao.TestDao;
+import com.apsi.repo.tests.domain.Document;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
 import com.apsi.repo.tests.dto.DocumentDto;
@@ -92,5 +94,10 @@ public class TestServiceImpl implements TestsService {
     @Override
     public void deleteDocument(Long documentId) {
         documentDao.deleteById(documentId);
+    }
+
+    @Override
+    public Document getDocument(Long documentId) {
+        return documentDao.findById(documentId).orElseThrow(() -> new DocumentNotFoundException(documentId));
     }
 }
