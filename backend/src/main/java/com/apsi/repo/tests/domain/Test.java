@@ -1,6 +1,5 @@
 package com.apsi.repo.tests.domain;
 
-import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.user.domain.User;
 import lombok.Data;
@@ -43,12 +42,17 @@ public class Test {
     public Test(TestDto dto) {
         name = dto.getName();
         description = dto.getDescription();
-        specifications = dto.getSpecifications().stream()
-                .map(Specification::new)
-                .collect(toList());
-        documents = dto.getDocuments().stream()
-                .map(Document::new)
-                .collect(toList());
+        if(dto.getSpecifications() != null) {
+            specifications = dto.getSpecifications().stream()
+                    .map(Specification::new)
+                    .collect(toList());
+        }
+        if(dto.getDocuments() != null) {
+            documents = dto.getDocuments().stream()
+                    .map(Document::new)
+                    .collect(toList());
+        }
+
     }
 
     public void addDocument(DocumentDto dto) {
