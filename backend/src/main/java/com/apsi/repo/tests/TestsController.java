@@ -90,8 +90,8 @@ public class TestsController {
     @PostMapping("/{id}/documents")
     @ResponseStatus(code = HttpStatus.OK)
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
-    public void createDocument(@PathVariable Long id, @RequestBody DocumentDto dto) {
-        testsService.createDocument(id, dto);
+    public void createDocument(@PathVariable Long id, @RequestBody List<DocumentDto> dtos) {
+        testsService.createDocument(id, dtos);
     }
 
     @DeleteMapping("/{id}/documents/{documentId}")

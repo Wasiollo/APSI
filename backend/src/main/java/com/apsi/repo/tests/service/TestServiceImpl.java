@@ -85,8 +85,8 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public void createDocument(Long testId, DocumentDto dto) {
-        testDao.findByIdOrThrow(testId).addDocument(dto);
+    public void createDocument(Long testId, List<DocumentDto> dtos) {
+        testDao.findByIdOrThrow(testId).addDocuments(dtos);
     }
 
     @Override

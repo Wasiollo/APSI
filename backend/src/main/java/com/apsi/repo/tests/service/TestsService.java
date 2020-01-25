@@ -27,7 +27,7 @@ public interface TestsService {
 
     void deleteTest(Long testId);
 
-    void createDocument(Long testId, DocumentDto dto);
+    void createDocument(Long testId, List<DocumentDto> dtos);
 
     void deleteDocument(Long documentId);
 }

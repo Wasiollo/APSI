@@ -54,4 +54,8 @@ public class Test {
     public void addDocument(DocumentDto dto) {
         documents.add(new Document(dto));
     }
+
+    public void addDocuments(List<DocumentDto> dtos) {
+        documents.addAll(dtos.stream().map(Document::new).collect(toList()));
+    }
 }
