@@ -35,9 +35,9 @@ public class Test {
     @ManyToOne
     private User owner;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Specification> specifications;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
 
     public Test(TestDto dto) {
