@@ -88,7 +88,7 @@ export class TestsListComponent implements OnInit {
     }
 
     addTest() {
-        const modalRef = this.modalService.open(AddTestComponent);
+        const modalRef = this.modalService.open(AddTestComponent, {size: 'lg'});
         modalRef.componentInstance.modalRef = modalRef;
     }
 

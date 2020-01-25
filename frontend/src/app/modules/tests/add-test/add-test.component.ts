@@ -1,8 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TestService} from "../service/test.service";
 import {CREATED} from "http-status-codes";
 import {ToastrService} from "ngx-toastr";
+import {TestStep} from "../model/test-step.model";
+import {Test} from "../model/test.model";
 
 @Component({
     selector: 'app-add-test',
@@ -17,6 +19,7 @@ export class AddTestComponent implements OnInit {
     }
 
     testForm: FormGroup;
+    testStepNumber = 1;
 
     ngOnInit() {
         this.buildTestForm();
@@ -26,9 +29,15 @@ export class AddTestComponent implements OnInit {
         this.testForm = this.formBuilder.group(
             {
                 name: ['', Validators.required],
-                description: ['', Validators.required]
+                description: ['', Validators.required],
+                specifications: new FormArray([]),
+                documents: new FormArray([])
             }
         );
+    }
+
+    get specs(): FormArray {
+        return <FormArray>this.testForm.controls.specifications;
     }
 
     onSubmit() {
@@ -51,5 +60,18 @@ export class AddTestComponent implements OnInit {
                     this.toastr.error(data.result);
                 }
             });
+    }
+
+    deleteStep(testStep: AbstractControl) {
+        this.specs.removeAt(this.specs.value.findIndex(spec => spec.number === testStep.value.number));
+    }
+
+    addTestStep() {
+        this.specs.push(this.formBuilder.group({
+            number: [this.testStepNumber, Validators.required],
+            userAction: ['', Validators.required],
+            systemReaction: ['', Validators.required]
+        }));
+        ++this.testStepNumber;
     }
 }
