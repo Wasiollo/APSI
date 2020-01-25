@@ -74,4 +74,9 @@ public class TestServiceImpl implements TestsService {
         testToAccept.setAccepted(true);
         return testToAccept;
     }
+
+    @Override
+    public void deleteTest(Long testId) {
+        testDao.deleteById(testId);
+    }
 }

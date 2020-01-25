@@ -22,4 +22,6 @@ public interface TestsService {
     List<Test> getTestsToAccept();
 
     Test acceptTest(Long testId);
+
+    void deleteTest(Long testId);
 }

@@ -78,4 +78,12 @@ public class TestsController {
     public Test acceptTest(@PathVariable Long testId){
         return testsService.acceptTest(testId);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public void deleteTest(@PathVariable Long testId) {
+        testsService.deleteTest(testId);
+    }
+
 }
