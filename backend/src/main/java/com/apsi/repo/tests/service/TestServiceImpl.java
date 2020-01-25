@@ -1,8 +1,10 @@
 package com.apsi.repo.tests.service;
 
+import com.apsi.repo.tests.dao.DocumentDao;
 import com.apsi.repo.tests.dao.TestDao;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
+import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.user.domain.User;
 import com.apsi.repo.user.service.UserService;
@@ -18,11 +20,13 @@ import java.util.List;
 public class TestServiceImpl implements TestsService {
 
     private final TestDao testDao;
+    private final DocumentDao documentDao;
     private final UserService userService;
 
     @Autowired
-    public TestServiceImpl(TestDao testDao, UserService userService) {
+    public TestServiceImpl(TestDao testDao, DocumentDao documentDao, UserService userService) {
         this.testDao = testDao;
+        this.documentDao = documentDao;
         this.userService = userService;
     }
 
@@ -78,5 +82,15 @@ public class TestServiceImpl implements TestsService {
     @Override
     public void deleteTest(Long testId) {
         testDao.deleteOrThrow(testId);
+    }
+
+    @Override
+    public void createDocument(Long testId, DocumentDto dto) {
+        testDao.findByIdOrThrow(testId).addDocument(dto);
+    }
+
+    @Override
+    public void deleteDocument(Long documentId) {
+        documentDao.deleteById(documentId);
     }
 }

@@ -2,8 +2,10 @@ package com.apsi.repo.tests.service;
 
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
+import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
 
+import java.io.File;
 import java.util.List;
 
 public interface TestsService {
@@ -24,4 +26,8 @@ public interface TestsService {
     Test acceptTest(Long testId);
 
     void deleteTest(Long testId);
+
+    void createDocument(Long testId, DocumentDto dto);
+
+    void deleteDocument(Long documentId);
 }

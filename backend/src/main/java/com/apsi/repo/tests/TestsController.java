@@ -2,6 +2,7 @@ package com.apsi.repo.tests;
 
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
+import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
 import com.apsi.repo.tests.service.TestsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,4 +87,17 @@ public class TestsController {
         testsService.deleteTest(id);
     }
 
+    @PostMapping("/{id}/documents")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public void createDocument(@PathVariable Long id, @RequestBody DocumentDto dto) {
+        testsService.createDocument(id, dto);
+    }
+
+    @DeleteMapping("/{id}/documents/{documentId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    public void deleteDocument(@PathVariable Long id, @PathVariable Long documentId) {
+        testsService.deleteDocument(documentId);
+    }
 }
