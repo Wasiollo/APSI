@@ -68,22 +68,22 @@ public class TestsController {
     @GetMapping("/unaccepted")
     @ResponseStatus(code = HttpStatus.OK)
     @Secured("ROLE_TEST_LEADER")
-    public List<Test> getTestToAccept(){
+    public List<Test> getTestToAccept() {
         return testsService.getTestsToAccept();
     }
 
     @PostMapping("/accept/{testId}")
     @ResponseStatus(code = HttpStatus.OK)
     @Secured("ROLE_TEST_LEADER")
-    public Test acceptTest(@PathVariable Long testId){
+    public Test acceptTest(@PathVariable Long testId) {
         return testsService.acceptTest(testId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
-    public void deleteTest(@PathVariable Long testId) {
-        testsService.deleteTest(testId);
+    public void deleteTest(@PathVariable Long id) {
+        testsService.deleteTest(id);
     }
 
 }
