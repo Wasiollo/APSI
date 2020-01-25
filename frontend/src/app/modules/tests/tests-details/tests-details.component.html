@@ -27,14 +27,23 @@
               <div class="row">
                 <b>Test status:</b> {{currentTest.status}}
               </div>
-                <input type="file" multiple="true" (change)="onFileChange($event)" />
+              <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th colspan="1">User Action</th>
+                        <th colspan="1">System Reaction</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let spec of currentTest.specifications">
+                        <td colspan="1">{{spec.userAction}}</td>
+                        <td colspan="1">{{spec.systemReaction}}</td>
+                    </tr>
+                    </tbody>
+              </table>
+
+              <input type="file" multiple="true" (change)="onFileChange($event)" />
             </div>
-
-
-
-
-
-
 
         </div>
     </div>

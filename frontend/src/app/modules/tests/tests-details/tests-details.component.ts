@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TestService} from "../service/test.service";
 import {Test} from "../model/test.model";
+import {Specs} from "../model/test.model";
 
 @Component({
     selector: 'app-tests-details',
@@ -25,7 +26,6 @@ export class TestsDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.currentTest = new Test();
-
         this.testService.getTest(this.testId).subscribe(data => {
             this.currentTest = data.result;
         })

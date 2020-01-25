@@ -9,4 +9,10 @@ export class Test {
     status: string;
     owner: User;
     accepted: boolean;
+    specifications: Specs[];
+}
+
+export class Specs {
+    userAction: string;
+    systemReaction: string;
 }
