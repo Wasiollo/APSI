@@ -77,6 +77,6 @@ public class TestServiceImpl implements TestsService {
 
     @Override
     public void deleteTest(Long testId) {
-        testDao.deleteById(testId);
+        testDao.deleteOrThrow(testId);
     }
 }
