@@ -18,6 +18,7 @@ export class AddTestComponent implements OnInit {
 
     testForm: FormGroup;
     testStepNumber = 1;
+    public maxFileSize = 20971520;
 
     ngOnInit() {
         this.buildTestForm();
@@ -36,6 +37,10 @@ export class AddTestComponent implements OnInit {
 
     get specs(): FormArray {
         return <FormArray>this.testForm.controls.specifications;
+    }
+
+    get docs(): FormArray {
+        return <FormArray>this.testForm.controls.documents;
     }
 
     onSubmit() {
@@ -71,5 +76,24 @@ export class AddTestComponent implements OnInit {
             systemReaction: ['', Validators.required]
         }));
         ++this.testStepNumber;
+    }
+
+    toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    public async uploadFile(event: any) {
+        // Iterate through all uploaded files.
+        for (let i = 0; i < event.target.files.length; i++) {
+            const file = event.target.files[i];
+            const baseFile = await this.toBase64(file);
+            this.docs.push(this.formBuilder.group({
+                fileName: [file.name, Validators.required],
+                data: [baseFile, Validators.required]
+            }))
+        }
     }
 }

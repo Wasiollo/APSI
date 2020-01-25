@@ -37,7 +37,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let testStep of specs.controls" [formGroup]="testStep" >
+                <tr *ngFor="let testStep of specs.controls" [formGroup]="testStep">
                     <td class="d-none"><input formControlName="number"></td>
                     <td><input formControlName="userAction" type="text"></td>
                     <td><input formControlName="systemReaction" type="text"></td>
@@ -53,6 +53,35 @@
             <button type="button" class="btn btn-success col-md-12" style="margin-bottom: 20px;"
                     (click)="addTestStep()">Add test step
             </button>
+            <mat-form-field>
+                <ngx-mat-file-input
+                        [accept]="[
+                      '.doc',
+                      '.docx',
+                      '.jpg',
+                      '.jpeg',
+                      '.pdf',
+                      '.png',
+                      '.xls',
+                      '.xlsx'
+                    ]"
+                        (change)="uploadFile($event)"
+                        multiple
+                        aria-label="Here you can add additional files about your project, which can be helpeful for us."
+                        placeholder="Additional files"
+                        title="Additional files"
+                        type="file"
+                >
+                </ngx-mat-file-input>
+                <mat-icon matSuffix>folder</mat-icon>
+                <mat-hint
+                >Accepted formats: DOC, DOCX, JPG, JPEG, PDF, PNG, XLS and XLSX,
+                    maximum files upload size: 20 MB.
+                </mat-hint>
+                <!--
+                  Non-null assertion operators are required to let know the compiler that this value is not empty and exists.
+                -->
+            </mat-form-field>
 
             <button class="btn btn-success col-md-12" [disabled]="testForm.invalid">Add Test</button>
         </form>
