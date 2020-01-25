@@ -20,6 +20,7 @@ export class TestService {
     testStatusesUrl = this.testsUrl + '/statuses';
     unacceptedTestsUrl = this.testsUrl + '/unaccepted';
     acceptTestUrl = this.testsUrl + '/accept';
+    deleteTestUrl = this.testsUrl;
 
     getTests(): Observable<ApiResponse> {
         return this.apiService.get(this.testsUrl);
@@ -55,5 +56,9 @@ export class TestService {
 
     acceptTest(testId: number) {
         return this.apiService.post(this.acceptTestUrl + '/' + testId, null);
+    }
+
+    deleteTest(testId: number) {
+        return this.apiService.delete(this.deleteTestUrl + '/' + testId);
     }
 }

@@ -13,6 +13,12 @@ export class TestsDetailsComponent implements OnInit {
     currentTest: Test;
     testId: number;
 
+     accept = '*'
+      files:File[] = []
+      progress:number
+      lastFileAt:Date
+      maxSize:any
+
     constructor(private router: Router, private testService: TestService) {
         this.testId = this.router.getCurrentNavigation().extras.state.testId;
     }
@@ -27,5 +33,9 @@ export class TestsDetailsComponent implements OnInit {
 
   returnToTestsList() {
     this.router.navigate(['tests'])
+  }
+
+  onFileChange(event) {
+    console.log(event);
   }
 }

@@ -118,4 +118,19 @@ export class TestsListComponent implements OnInit {
             }
         });
     }
+
+    deleteTest(testId: number): void {
+        if (confirm('Are you sure to delete this test?')) {
+            this.testService.deleteTest(testId)
+                .subscribe( data => {
+                    if(data.status === OK) {
+                        this.tests = this.tests.filter(t => t.id !== testId);
+                        this.toastr.success("Test deleted successfully");
+                    }
+                    else {
+                        this.toastr.error("Error occurred when deleting");
+                    }
+                });
+        }
+    }
 }
