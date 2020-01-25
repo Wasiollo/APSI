@@ -27,7 +27,7 @@ public class TestsController {
     @ResponseStatus(code = HttpStatus.OK)
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
     public List<Test> getTests() {
-        return testsService.getTests();
+        return testsService.getAcceptedTests();
     }
 
     @GetMapping("/{id}")
@@ -48,12 +48,12 @@ public class TestsController {
     @ResponseStatus(code = HttpStatus.OK)
     @Secured("ROLE_TEST_LEADER")
     public List<Test> getAllTests() {
-        return testsService.getAllTests();
+        return testsService.getAllAcceptedTests();
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
+    @Secured({"ROLE_TEST_SCENARIO_CREATOR", "ROLE_TEST_LEADER"})
     public Test createTest(@RequestBody TestDto dto) {
         return testsService.createTest(dto);
     }
@@ -63,5 +63,19 @@ public class TestsController {
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
     public Test updateTest(@RequestBody Test toUpdate) {
         return testsService.updateTest(toUpdate);
+    }
+
+    @GetMapping("/unaccepted")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured("ROLE_TEST_LEADER")
+    public List<Test> getTestToAccept(){
+        return testsService.getTestsToAccept();
+    }
+
+    @PostMapping("/accept/{testId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    @Secured("ROLE_TEST_LEADER")
+    public Test acceptTest(@PathVariable Long testId){
+        return testsService.acceptTest(testId);
     }
 }

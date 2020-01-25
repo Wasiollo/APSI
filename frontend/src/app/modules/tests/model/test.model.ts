@@ -8,4 +8,5 @@ export class Test {
     updateDate: Date;
     status: string;
     owner: User;
+    accepted: boolean;
 }

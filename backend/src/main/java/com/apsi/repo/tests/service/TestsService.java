@@ -7,9 +7,9 @@ import com.apsi.repo.tests.dto.TestDto;
 import java.util.List;
 
 public interface TestsService {
-    List<Test> getTests();
+    List<Test> getAcceptedTests();
 
-    List<Test> getAllTests();
+    List<Test> getAllAcceptedTests();
 
     Test createTest(TestDto dto);
 
@@ -18,4 +18,8 @@ public interface TestsService {
     List<TestStatus> getTestStatuses();
 
     Test getTest(Long id);
+
+    List<Test> getTestsToAccept();
+
+    Test acceptTest(Long testId);
 }

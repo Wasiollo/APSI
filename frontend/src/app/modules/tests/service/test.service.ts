@@ -18,6 +18,8 @@ export class TestService {
     testsUrl = baseUrl + '/tests';
     testsAllUrl = this.testsUrl + '/all';
     testStatusesUrl = this.testsUrl + '/statuses';
+    unacceptedTestsUrl = this.testsUrl + '/unaccepted';
+    acceptTestUrl = this.testsUrl + '/accept';
 
     getTests(): Observable<ApiResponse> {
         return this.apiService.get(this.testsUrl);
@@ -45,5 +47,13 @@ export class TestService {
 
     addedTest(test: Test) {
         this.testAdded.emit(test);
+    }
+
+    getUnAcceptedTests(): Observable<ApiResponse> {
+        return this.apiService.get(this.unacceptedTestsUrl);
+    }
+
+    acceptTest(testId: number) {
+        return this.apiService.post(this.acceptTestUrl + '/' + testId, null);
     }
 }

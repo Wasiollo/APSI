@@ -9,6 +9,7 @@ import com.apsi.repo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -26,14 +27,14 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public List<Test> getTests() {
+    public List<Test> getAcceptedTests() {
         User currentUser = userService.getCurrentUser();
-        return testDao.findAllByOwner(currentUser);
+        return testDao.findAllAcceptedByOwner(currentUser);
     }
 
     @Override
-    public List<Test> getAllTests() {
-        return (List<Test>) testDao.findAll();
+    public List<Test> getAllAcceptedTests() {
+        return testDao.findAllByAccepted(true);
     }
 
     @Override
@@ -59,5 +60,18 @@ public class TestServiceImpl implements TestsService {
     @Override
     public Test getTest(Long id) {
         return testDao.findById(id).orElseThrow();
+    }
+
+    @Override
+    public List<Test> getTestsToAccept() {
+        return testDao.findAllByAccepted(false);
+    }
+
+    @Override
+    @Transactional
+    public Test acceptTest(Long testId) {
+        Test testToAccept = testDao.findById(testId).orElseThrow();
+        testToAccept.setAccepted(true);
+        return testToAccept;
     }
 }

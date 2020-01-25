@@ -6,6 +6,7 @@ import {TestService} from "../service/test.service";
 import {ToastrService} from "ngx-toastr";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddTestComponent} from "../add-test/add-test.component";
+import {OK} from "http-status-codes";
 
 @Component({
     selector: 'app-tests-list',
@@ -18,11 +19,13 @@ export class TestsListComponent implements OnInit {
     page: number;
     pageSize: number;
     testStatuses: string[];
+    acceptedList: boolean;
 
     constructor(private router: Router, private testService: TestService, private authenticationService: AuthenticationService, private modalService: NgbModal, private toastr: ToastrService) {
     }
 
     ngOnInit() {
+        this.acceptedList = true;
         this.tests = [];
         this.testStatuses = [];
         this.page = 1;
@@ -37,10 +40,10 @@ export class TestsListComponent implements OnInit {
         this.getTestStatuses();
 
         this.testService.testAdded.subscribe(test => {
-            this.tests.unshift(test);
+            if (!this.acceptedList) {
+                this.tests.unshift(test);
+            }
         });
-
-
     }
 
     getTests() {
@@ -89,4 +92,30 @@ export class TestsListComponent implements OnInit {
         modalRef.componentInstance.modalRef = modalRef;
     }
 
+    setAcceptedList(acc: boolean) {
+        this.acceptedList = acc;
+        if (acc) {
+            this.getTests();
+        } else {
+            this.getUnacceptedTests();
+        }
+    }
+
+    private getUnacceptedTests() {
+        this.testService.getUnAcceptedTests()
+            .subscribe(data => {
+                this.tests = data.result;
+            });
+    }
+
+    acceptTest(testId: number) {
+        this.testService.acceptTest(testId).subscribe(data => {
+            if (data.status === OK) {
+                this.toastr.success("Test accepted successfully");
+                this.tests = this.tests.filter(t => t.id != testId);
+            } else {
+                this.toastr.error("Error occurred when accepting");
+            }
+        });
+    }
 }

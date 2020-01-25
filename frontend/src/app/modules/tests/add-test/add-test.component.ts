@@ -45,6 +45,7 @@ export class AddTestComponent implements OnInit {
             .subscribe(data => {
                 if (data.status === CREATED) {
                     this.modalRef.close();
+                    this.toastr.success("Test sent to verification");
                     this.testService.addedTest(data.result);
                 } else {
                     this.toastr.error(data.result);

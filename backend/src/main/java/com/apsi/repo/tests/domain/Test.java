@@ -25,6 +25,9 @@ public class Test {
     @Column
     @Enumerated(EnumType.STRING)
     private TestStatus status;
+    @Column
+    private Boolean accepted = false;
+
     @ManyToOne
     private User owner;
 
