@@ -91,7 +91,7 @@ export class AddTestComponent implements OnInit {
             const file = event.target.files[i];
             const baseFile = await this.toBase64(file);
             this.docs.push(this.formBuilder.group({
-                fileName: [file.name, Validators.required],
+                filename: [file.name, Validators.required],
                 data: [baseFile, Validators.required]
             }))
         }

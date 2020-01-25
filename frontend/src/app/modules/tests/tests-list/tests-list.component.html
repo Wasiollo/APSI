@@ -9,13 +9,13 @@
                                 (click)="setAcceptedList(true)">Test List
                         </button>
                     </div>
-                    <div class="col-4" *ngIf="authenticationService.hasRole('ROLE_TEST_SCENARIO_CREATOR') || authenticationService.hasRole('ROLE_TEST_LEADER')">
+                    <div class="col-4" *ngIf="canAddTest()">
                         <button class="btn btn-success"
                                 (click)="addTest()">
                             <i class="fa fa-plus"></i> Add Test
                         </button>
                     </div>
-                    <div class="col-4" *ngIf="authenticationService.hasRole('ROLE_TEST_LEADER')">
+                    <div class="col-4" *ngIf="canSeeToAccept()">
                         <button class="btn btn-light"
                                 [ngClass]="{'active': acceptedList === false}"
                                 (click)="setAcceptedList(false)">Tests to accept

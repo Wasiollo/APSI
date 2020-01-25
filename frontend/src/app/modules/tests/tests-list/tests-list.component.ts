@@ -133,4 +133,12 @@ export class TestsListComponent implements OnInit {
                 });
         }
     }
+
+    canAddTest() {
+        return this.authenticationService.hasRole('ROLE_TEST_SCENARIO_CREATOR') || this.authenticationService.hasRole('ROLE_TEST_LEADER')
+    }
+
+    canSeeToAccept() {
+        return this.authenticationService.hasRole('ROLE_TEST_LEADER')
+    }
 }
