@@ -87,6 +87,7 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
+    @Transactional
     public void createDocument(Long testId, List<DocumentDto> dtos) {
         testDao.findByIdOrThrow(testId).addDocuments(dtos);
     }

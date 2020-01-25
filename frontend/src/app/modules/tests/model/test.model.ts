@@ -10,9 +10,17 @@ export class Test {
     owner: User;
     accepted: boolean;
     specifications: Specs[];
+    documents: TestDocument[];
 }
 
 export class Specs {
+    id: number;
     userAction: string;
     systemReaction: string;
+}
+
+export class TestDocument {
+    id: number;
+    filename: string;
+    data: any;
 }
