@@ -53,18 +53,9 @@
             <button type="button" class="btn btn-success col-md-12" style="margin-bottom: 20px;"
                     (click)="addTestStep()">Add test step
             </button>
-            <mat-form-field>
+            <mat-form-field class="add-files">
                 <ngx-mat-file-input
-                        [accept]="[
-                      '.doc',
-                      '.docx',
-                      '.jpg',
-                      '.jpeg',
-                      '.pdf',
-                      '.png',
-                      '.xls',
-                      '.xlsx'
-                    ]"
+                        [accept]="['.doc','.docx','.jpg','.jpeg','.pdf','.png','.xls','.xlsx']"
                         (change)="uploadFile($event)"
                         multiple
                         aria-label="Here you can add additional files about your project, which can be helpeful for us."
@@ -78,9 +69,6 @@
                 >Accepted formats: DOC, DOCX, JPG, JPEG, PDF, PNG, XLS and XLSX,
                     maximum files upload size: 20 MB.
                 </mat-hint>
-                <!--
-                  Non-null assertion operators are required to let know the compiler that this value is not empty and exists.
-                -->
             </mat-form-field>
 
             <button class="btn btn-success col-md-12" [disabled]="testForm.invalid">Add Test</button>

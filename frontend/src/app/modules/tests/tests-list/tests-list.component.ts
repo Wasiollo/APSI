@@ -30,10 +30,8 @@ export class TestsListComponent implements OnInit {
         this.testStatuses = [];
         this.page = 1;
         this.pageSize = 9;
-        if (this.authenticationService.hasRole((this.authenticationService.ROLE_TEST_LEADER))) {
+        if (this.authenticationService.hasRole(this.authenticationService.ROLE_TESTER) || this.authenticationService.hasRole(this.authenticationService.ROLE_TEST_LEADER)) {
             this.getAllTests();
-        } else if (this.authenticationService.hasRole(this.authenticationService.ROLE_TESTER)) {
-            this.getTests();
         } else {
             this.router.navigate(['home']);
         }
@@ -44,13 +42,6 @@ export class TestsListComponent implements OnInit {
                 this.tests.unshift(test);
             }
         });
-    }
-
-    getTests() {
-        this.testService.getTests()
-            .subscribe(data => {
-                this.tests = data.result;
-            });
     }
 
     private getTestStatuses() {
@@ -95,7 +86,7 @@ export class TestsListComponent implements OnInit {
     setAcceptedList(acc: boolean) {
         this.acceptedList = acc;
         if (acc) {
-            this.getTests();
+            this.getAllTests();
         } else {
             this.getUnacceptedTests();
         }
@@ -122,12 +113,11 @@ export class TestsListComponent implements OnInit {
     deleteTest(testId: number): void {
         if (confirm('Are you sure to delete this test?')) {
             this.testService.deleteTest(testId)
-                .subscribe( data => {
-                    if(data.status === OK) {
+                .subscribe(data => {
+                    if (data.status === OK) {
                         this.tests = this.tests.filter(t => t.id !== testId);
                         this.toastr.success("Test deleted successfully");
-                    }
-                    else {
+                    } else {
                         this.toastr.error("Error occurred when deleting");
                     }
                 });

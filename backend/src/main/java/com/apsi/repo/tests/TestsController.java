@@ -48,7 +48,7 @@ public class TestsController {
 
     @GetMapping("/all")
     @ResponseStatus(code = HttpStatus.OK)
-    @Secured("ROLE_TEST_LEADER")
+    @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
     public List<Test> getAllTests() {
         return testsService.getAllAcceptedTests();
     }

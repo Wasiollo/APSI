@@ -65,4 +65,8 @@ export class TestService {
     uploadFiles(testId: number, filesToUpload: TestDocument[]): Observable<ApiResponse> {
         return this.apiService.post(this.testsUrl + '/' + testId + '/documents', filesToUpload);
     }
+
+    deleteTestDocument(testId: number, id: number) {
+        return this.apiService.delete(this.testsUrl + '/' + testId + '/documents/' + id)
+    }
 }

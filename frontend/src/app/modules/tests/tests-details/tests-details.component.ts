@@ -19,10 +19,10 @@ export class TestsDetailsComponent implements OnInit {
     filesToUpload: TestDocument[];
 
     constructor(private router: Router, private testService: TestService, private toastr: ToastrService) {
-        if (this.router.getCurrentNavigation !== undefined){
+        if (this.router.getCurrentNavigation().extras.state !== undefined && this.router.getCurrentNavigation().extras.state !== null){
             this.testId = this.router.getCurrentNavigation().extras.state.testId;
         } else {
-            this.testId = undefined;
+            this.testId = null;
         }
     }
 
@@ -63,12 +63,23 @@ export class TestsDetailsComponent implements OnInit {
     saveUploadedFiles() {
         this.testService.uploadFiles(this.testId, this.filesToUpload).subscribe(data =>{
             if (data.status === OK){
-                this.currentTest.documents.concat(this.filesToUpload);
+                for (let file of this.filesToUpload){
+                    this.currentTest.documents.push(file);
+                }
                 this.toastr.success("File uploaded successfully");
                 this.filesToUpload = [];
             } else {
                 this.toastr.error("Error occured uploading files")
             }
         })
+    }
+
+    deleteDocument(doc: TestDocument) {
+        if (confirm('Are you sure to delete ' + doc.filename + ' ?')) {
+            this.testService.deleteTestDocument(this.currentTest.id, doc.id)
+                .subscribe(() => {
+                    this.currentTest.documents = this.currentTest.documents.filter(d => d !== doc);
+                });
+        }
     }
 }
