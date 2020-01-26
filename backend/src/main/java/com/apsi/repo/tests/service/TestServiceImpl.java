@@ -103,6 +103,7 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
+    @Transactional
     public void deleteDocument(Long testId, Long documentId) {
         testDao.findByIdOrThrow(testId).deleteDocument(documentId);
         documentDao.deleteById(documentId);

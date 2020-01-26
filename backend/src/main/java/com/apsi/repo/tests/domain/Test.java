@@ -36,9 +36,9 @@ public class Test {
     @ManyToOne
     private User owner;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Specification> specifications;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
 
     public Test(TestDto dto) {
@@ -72,6 +72,8 @@ public class Test {
     }
 
     public void deleteDocument(Long documentId) {
-        documents.stream().filter(document -> document.getId().equals(documentId)).map(document -> documents.remove(document));
+        List<Document> documents = this.documents.stream().filter(document -> !document.getId().equals(documentId)).collect(toList());
+        this.documents.clear();
+        this.documents = documents;
     }
 }
