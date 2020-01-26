@@ -4,33 +4,35 @@ import com.apsi.repo.tests.domain.Document;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
 import com.apsi.repo.tests.dto.DocumentDto;
+import com.apsi.repo.tests.dto.DocumentInfoDto;
 import com.apsi.repo.tests.dto.TestDto;
+import com.apsi.repo.tests.dto.TestInfoDto;
 
 import java.io.File;
 import java.util.List;
 
 public interface TestsService {
-    List<Test> getAcceptedTests();
+    List<TestInfoDto> getAcceptedTests();
 
-    List<Test> getAllAcceptedTests();
+    List<TestInfoDto> getAllAcceptedTests();
 
-    Test createTest(TestDto dto);
+    TestInfoDto createTest(TestDto dto);
 
-    Test updateTest(Test toUpdate);
+    TestInfoDto updateTest(Test toUpdate);
 
     List<TestStatus> getTestStatuses();
 
-    Test getTest(Long id);
+    TestInfoDto getTest(Long id);
 
-    List<Test> getTestsToAccept();
+    List<TestInfoDto> getTestsToAccept();
 
-    Test acceptTest(Long testId);
+    TestInfoDto acceptTest(Long testId);
 
     void deleteTest(Long testId);
 
-    void createDocument(Long testId, List<DocumentDto> dtos);
+    List<DocumentInfoDto> createDocuments(Long testId, List<DocumentDto> dtos);
 
-    void deleteDocument(Long documentId);
+    void deleteDocument(Long id, Long documentId);
 
     Document getDocument(Long documentId);
 }

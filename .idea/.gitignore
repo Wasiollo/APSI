@@ -11,3 +11,5 @@
 /codeStyles/
 /compiler.xml
 /modules.xml
+# Editor-based HTTP Client requests
+/httpRequests/

@@ -1,6 +1,7 @@
 package com.apsi.repo.tests.domain;
 
 import com.apsi.repo.tests.dto.DocumentDto;
+import com.apsi.repo.tests.dto.DocumentInfoDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,9 @@ public class Document {
     public Document(DocumentDto dto) {
         filename = dto.getFilename();
         data = dto.getData();
+    }
+
+    public DocumentInfoDto toInfoDto() {
+        return new DocumentInfoDto(id, filename);
     }
 }

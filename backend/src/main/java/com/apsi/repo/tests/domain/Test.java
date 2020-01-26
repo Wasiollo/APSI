@@ -2,6 +2,7 @@ package com.apsi.repo.tests.domain;
 
 import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.TestDto;
+import com.apsi.repo.tests.dto.TestInfoDto;
 import com.apsi.repo.user.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,9 +36,9 @@ public class Test {
     @ManyToOne
     private User owner;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Specification> specifications;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Document> documents;
 
     public Test(TestDto dto) {
@@ -56,11 +57,21 @@ public class Test {
 
     }
 
+    public TestInfoDto toTestInfoDto() {
+        return new TestInfoDto(id, name, description, updateDate, status, accepted, owner,
+                specifications.stream().map(Specification::toDto).collect(toList()),
+                documents.stream().map(Document::toInfoDto).collect(toList()));
+    }
+
     public void addDocument(DocumentDto dto) {
         documents.add(new Document(dto));
     }
 
-    public void addDocuments(List<DocumentDto> dtos) {
-        documents.addAll(dtos.stream().map(Document::new).collect(toList()));
+    public void addDocuments(List<Document> documents) {
+        this.documents.addAll(List.copyOf(documents));
+    }
+
+    public void deleteDocument(Long documentId) {
+        documents.stream().filter(document -> document.getId().equals(documentId)).map(document -> documents.remove(document));
     }
 }

@@ -27,4 +27,8 @@ public class Specification {
         userAction = dto.getUserAction();
         systemReaction = dto.getSystemReaction();
     }
+
+    public SpecificationDto toDto() {
+        return new SpecificationDto(number, userAction, systemReaction);
+    }
 }

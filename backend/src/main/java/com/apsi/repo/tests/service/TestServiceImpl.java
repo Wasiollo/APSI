@@ -7,7 +7,9 @@ import com.apsi.repo.tests.domain.Document;
 import com.apsi.repo.tests.domain.Test;
 import com.apsi.repo.tests.domain.TestStatus;
 import com.apsi.repo.tests.dto.DocumentDto;
+import com.apsi.repo.tests.dto.DocumentInfoDto;
 import com.apsi.repo.tests.dto.TestDto;
+import com.apsi.repo.tests.dto.TestInfoDto;
 import com.apsi.repo.user.domain.User;
 import com.apsi.repo.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TestServiceImpl implements TestsService {
@@ -33,29 +39,29 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public List<Test> getAcceptedTests() {
+    public List<TestInfoDto> getAcceptedTests() {
         User currentUser = userService.getCurrentUser();
-        return testDao.findAllAcceptedByOwner(currentUser);
+        return testDao.findAllAcceptedByOwner(currentUser).stream().map(Test::toTestInfoDto).collect(toList());
     }
 
     @Override
-    public List<Test> getAllAcceptedTests() {
-        return testDao.findAllByAccepted(true);
+    public List<TestInfoDto> getAllAcceptedTests() {
+        return testDao.findAllByAccepted(true).stream().map(Test::toTestInfoDto).collect(toList());
     }
 
     @Override
-    public Test createTest(TestDto dto) {
+    public TestInfoDto createTest(TestDto dto) {
         Test toCreate = new Test(dto);
         toCreate.setStatus(TestStatus.NEW);
         toCreate.setUpdateDate(LocalDateTime.now());
         toCreate.setOwner(userService.getCurrentUser());
-        return testDao.save(toCreate);
+        return testDao.save(toCreate).toTestInfoDto();
     }
 
     @Override
-    public Test updateTest(Test toUpdate) {
+    public TestInfoDto updateTest(Test toUpdate) {
         toUpdate.setUpdateDate(LocalDateTime.now());
-        return testDao.save(toUpdate);
+        return testDao.save(toUpdate).toTestInfoDto();
     }
 
     @Override
@@ -64,21 +70,21 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public Test getTest(Long id) {
-        return testDao.findById(id).orElseThrow();
+    public TestInfoDto getTest(Long id) {
+        return testDao.findById(id).orElseThrow().toTestInfoDto();
     }
 
     @Override
-    public List<Test> getTestsToAccept() {
-        return testDao.findAllByAccepted(false);
+    public List<TestInfoDto> getTestsToAccept() {
+        return testDao.findAllByAccepted(false).stream().map(Test::toTestInfoDto).collect(toList());
     }
 
     @Override
     @Transactional
-    public Test acceptTest(Long testId) {
+    public TestInfoDto acceptTest(Long testId) {
         Test testToAccept = testDao.findById(testId).orElseThrow();
         testToAccept.setAccepted(true);
-        return testToAccept;
+        return testToAccept.toTestInfoDto();
     }
 
     @Override
@@ -88,12 +94,17 @@ public class TestServiceImpl implements TestsService {
 
     @Override
     @Transactional
-    public void createDocument(Long testId, List<DocumentDto> dtos) {
-        testDao.findByIdOrThrow(testId).addDocuments(dtos);
+    public List<DocumentInfoDto> createDocuments(Long testId, List<DocumentDto> dtos) {
+        List<Document> documents = dtos.stream()
+                .map(documentDto -> documentDao.save(new Document(documentDto)))
+                .collect(toList());
+        testDao.findByIdOrThrow(testId).addDocuments(documents);
+        return documents.stream().map(Document::toInfoDto).collect(toList());
     }
 
     @Override
-    public void deleteDocument(Long documentId) {
+    public void deleteDocument(Long testId, Long documentId) {
+        testDao.findByIdOrThrow(testId).deleteDocument(documentId);
         documentDao.deleteById(documentId);
     }
 
