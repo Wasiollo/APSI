@@ -6,3 +6,10 @@
 /dataSources/
 /libraries/
 /dataSources.xml
+
+/misc.xml
+/codeStyles/
+/compiler.xml
+/modules.xml
+# Editor-based HTTP Client requests
+/httpRequests/

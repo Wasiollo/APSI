@@ -37,37 +37,50 @@ public class UserController {
     }
 
     @PutMapping
+    @ResponseStatus(code = HttpStatus.OK)
     public UserDto updateUser(@RequestBody UserDto user) throws NoSuchUserException {
         return userService.updateUser(user);
     }
 
     @PutMapping("/update_password")
+    @ResponseStatus(code = HttpStatus.OK)
     public UpdateUserPasswordDto updatePassword(@RequestBody UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException, SamePasswordException {
         return userService.updatePassword(userDto);
     }
 
     @GetMapping(value = "/list")
+    @ResponseStatus(code = HttpStatus.OK)
     public List<UserDto> getAllUsers(){
         return userService.getAllUsers();
     }
 
     @GetMapping(value = "/{userId}")
+    @ResponseStatus(code = HttpStatus.OK)
     public UserDto getUser(@PathVariable Long userId) throws NoSuchUserException {
         return userService.getUser(userId);
     }
 
     @GetMapping
+    @ResponseStatus(code = HttpStatus.OK)
     public UserDto getUserByUsername(@RequestParam(name = "username") String username) throws NoSuchUserException {
         return userService.getUserByUserName(username);
     }
 
     @PutMapping("/grant-admin")
+    @ResponseStatus(code = HttpStatus.OK)
     public UserDto grantAdmin(@RequestParam(name = "userId") Long userId) throws NoSuchUserException {
         return userService.grantAdmin(userId);
     }
 
     @PutMapping("/revoke-admin")
+    @ResponseStatus(code = HttpStatus.OK)
     public UserDto revokeAdmin(@RequestParam(name = "userId") Long userId) throws NoSuchUserException {
         return userService.revokeAdmin(userId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void deleteUser(@PathVariable(name = "id") Long id) {
+        userService.deleteUser(id);
     }
 }

@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {environment} from "../../../../environments/environment";
 import {ApiService} from "../../../core/api.service";
 import {ApiResponse} from "../../../model/api.response";
-import {Test} from "../model/test.model";
+import {Test, TestDocument} from "../model/test.model";
 
 const baseUrl = environment.APIEndpoint;
 
@@ -18,6 +18,9 @@ export class TestService {
     testsUrl = baseUrl + '/tests';
     testsAllUrl = this.testsUrl + '/all';
     testStatusesUrl = this.testsUrl + '/statuses';
+    unacceptedTestsUrl = this.testsUrl + '/unaccepted';
+    acceptTestUrl = this.testsUrl + '/accept';
+    deleteTestUrl = this.testsUrl;
 
     getTests(): Observable<ApiResponse> {
         return this.apiService.get(this.testsUrl);
@@ -35,15 +38,39 @@ export class TestService {
         return this.apiService.put(this.testsUrl, test);
     }
 
-    getTestStatuses(): Observable<ApiResponse>  {
+    getTestStatuses(): Observable<ApiResponse> {
         return this.apiService.get(this.testStatusesUrl);
     }
 
-    getTest(testId: number): Observable<ApiResponse>  {
+    getTest(testId: number): Observable<ApiResponse> {
         return this.apiService.get(this.testsUrl + '/' + testId);
     }
 
     addedTest(test: Test) {
         this.testAdded.emit(test);
+    }
+
+    getUnAcceptedTests(): Observable<ApiResponse> {
+        return this.apiService.get(this.unacceptedTestsUrl);
+    }
+
+    acceptTest(testId: number): Observable<ApiResponse> {
+        return this.apiService.post(this.acceptTestUrl + '/' + testId, null);
+    }
+
+    deleteTest(testId: number): Observable<ApiResponse> {
+        return this.apiService.delete(this.deleteTestUrl + '/' + testId);
+    }
+
+    uploadFiles(testId: number, filesToUpload: TestDocument[]): Observable<ApiResponse> {
+        return this.apiService.post(this.testsUrl + '/' + testId + '/documents', filesToUpload);
+    }
+
+    deleteTestDocument(testId: number, id: number): Observable<ApiResponse> {
+        return this.apiService.delete(this.testsUrl + '/' + testId + '/documents/' + id);
+    }
+
+    downloadDocumentContent(testId: number, documentId: number): Observable<ApiResponse> {
+        return this.apiService.get(this.testsUrl + '/' + testId + '/documents/' + documentId);
     }
 }

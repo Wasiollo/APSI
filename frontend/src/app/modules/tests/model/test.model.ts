@@ -8,4 +8,19 @@ export class Test {
     updateDate: Date;
     status: string;
     owner: User;
+    accepted: boolean;
+    specification: Specs[];
+    documents: TestDocument[];
+}
+
+export class Specs {
+    id: number;
+    userAction: string;
+    systemReaction: string;
+}
+
+export class TestDocument {
+    id: number;
+    filename: string;
+    data: any;
 }

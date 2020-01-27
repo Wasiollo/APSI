@@ -6,6 +6,7 @@ import {TestService} from "../service/test.service";
 import {ToastrService} from "ngx-toastr";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AddTestComponent} from "../add-test/add-test.component";
+import {OK} from "http-status-codes";
 
 @Component({
     selector: 'app-tests-list',
@@ -18,36 +19,29 @@ export class TestsListComponent implements OnInit {
     page: number;
     pageSize: number;
     testStatuses: string[];
+    acceptedList: boolean;
 
     constructor(private router: Router, private testService: TestService, private authenticationService: AuthenticationService, private modalService: NgbModal, private toastr: ToastrService) {
     }
 
     ngOnInit() {
+        this.acceptedList = true;
         this.tests = [];
         this.testStatuses = [];
         this.page = 1;
         this.pageSize = 9;
-        if (this.authenticationService.hasRole((this.authenticationService.ROLE_TEST_LEADER))) {
+        if (this.authenticationService.hasRole(this.authenticationService.ROLE_TESTER) || this.authenticationService.hasRole(this.authenticationService.ROLE_TEST_LEADER)) {
             this.getAllTests();
-        } else if (this.authenticationService.hasRole(this.authenticationService.ROLE_TESTER)) {
-            this.getTests();
         } else {
             this.router.navigate(['home']);
         }
         this.getTestStatuses();
 
         this.testService.testAdded.subscribe(test => {
-            this.tests.unshift(test);
+            if (!this.acceptedList) {
+                this.tests.unshift(test);
+            }
         });
-
-
-    }
-
-    getTests() {
-        this.testService.getTests()
-            .subscribe(data => {
-                this.tests = data.result;
-            });
     }
 
     private getTestStatuses() {
@@ -85,8 +79,57 @@ export class TestsListComponent implements OnInit {
     }
 
     addTest() {
-        const modalRef = this.modalService.open(AddTestComponent);
+        const modalRef = this.modalService.open(AddTestComponent, {size: 'lg'});
         modalRef.componentInstance.modalRef = modalRef;
     }
 
+    setAcceptedList(acc: boolean) {
+        this.acceptedList = acc;
+        this.tests = [];
+        if (acc) {
+            this.getAllTests();
+        } else {
+            this.getUnacceptedTests();
+        }
+    }
+
+    private getUnacceptedTests() {
+        this.testService.getUnAcceptedTests()
+            .subscribe(data => {
+                this.tests = data.result;
+            });
+    }
+
+    acceptTest(testId: number) {
+        this.testService.acceptTest(testId).subscribe(data => {
+            if (data.status === OK) {
+                this.toastr.success("Test accepted successfully");
+                this.tests = this.tests.filter(t => t.id != testId);
+            } else {
+                this.toastr.error("Error occurred when accepting");
+            }
+        });
+    }
+
+    deleteTest(testId: number): void {
+        if (confirm('Are you sure to delete this test?')) {
+            this.testService.deleteTest(testId)
+                .subscribe(data => {
+                    if (data.status === OK) {
+                        this.tests = this.tests.filter(t => t.id !== testId);
+                        this.toastr.success("Test deleted successfully");
+                    } else {
+                        this.toastr.error("Error occurred when deleting");
+                    }
+                });
+        }
+    }
+
+    canAddTest() {
+        return this.authenticationService.hasRole('ROLE_TEST_SCENARIO_CREATOR') || this.authenticationService.hasRole('ROLE_TEST_LEADER')
+    }
+
+    canSeeToAccept() {
+        return this.authenticationService.hasRole('ROLE_TEST_LEADER')
+    }
 }

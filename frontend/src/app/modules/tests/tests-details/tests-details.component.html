@@ -6,28 +6,120 @@
             </div>
             <div class="card-body">
 
-              <div style="margin-bottom: 20px;">
-                <button class="btn btn-info" (click)="returnToTestsList()"><i class="fa fa-backward"></i> Tests list </button>
-              </div>
-              <div class="row d-none">
-                <b>Test ID:</b> {{currentTest.id}}
-              </div>
-              <div class="row">
-                <b>Name:</b> {{currentTest.name}}
-              </div>
-              <div class="row">
-                <b>Description:</b> {{currentTest.description}}
-              </div>
-              <div class="row">
-                <b>Update date:</b> {{currentTest.updateDate | date:'yyyy-MM-dd hh:mm:ss'}}
-              </div>
-              <div class="row">
-                <b>Test creator:</b> {{currentTest.owner.username}}
-              </div>
-              <div class="row">
-                <b>Test status:</b> {{currentTest.status}}
-              </div>
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-info" (click)="returnToTestsList()"><i class="fa fa-backward"></i> Tests list
+                    </button>
+                </div>
+                <div class="scrollable-content">
+                    <div class="row test-basic-details">
+                        <div class="col-6">
+                            <div class="row d-none">
+                                <div class="col-3">
+                                    <b>Test ID:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.id}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Name:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.name}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Description:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.description}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Update date:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.updateDate | date:'yyyy-MM-dd hh:mm:ss'}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Test creator:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.owner.username}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Test status:</b>
+                                </div>
+                                <div class="col-9">
+                                    {{currentTest.status}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="row">
+                                <div class="col-12"><b>Files related to test:</b>
+                                </div>
+                            </div>
+                            <div *ngFor="let doc of currentTest.documents" class="row">
+                                <div class="col-10">
+                                    <div style="cursor: pointer;" (click)="downloadDoc(doc)">
+                                        {{doc.filename}}
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn-danger" (click)="deleteDocument(doc)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <mat-form-field class="add-files">
+                                <ngx-mat-file-input
+                                        [accept]="['.doc','.docx','.jpg','.jpeg','.pdf','.png','.xls','.xlsx']"
+                                        (change)="uploadFile($event)"
+                                        multiple
+                                        aria-label="Here you can add additional files about your project, which can be helpeful for us."
+                                        placeholder="Additional files"
+                                        title="Additional files"
+                                        type="file"
+                                >
+                                </ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-hint
+                                >Accepted formats: DOC, DOCX, JPG, JPEG, PDF, PNG, XLS and XLSX,
+                                    maximum files upload size: 20 MB.
+                                </mat-hint>
+                            </mat-form-field>
+                            <button type="button" class="btn btn-success" (click)="saveUploadedFiles()">Save uploaded
+                                files
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="1">User Action</th>
+                            <th colspan="1">System Reaction</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let spec of currentTest.specification">
+                            <td colspan="1">{{spec.userAction}}</td>
+                            <td colspan="1">{{spec.systemReaction}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
     </div>
 </div>

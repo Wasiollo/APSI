@@ -124,6 +124,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public void deleteUser(Long id) {
+        userDao.deleteById(id);
+    }
+
+    @Override
     public UpdateUserPasswordDto updatePassword(UpdateUserPasswordDto userDto) throws NoSuchUserException, BadPreviousPasswordException, SamePasswordException {
         User user = userDao.findById(userDto.getId()).orElseThrow(NoSuchUserException::new);
         if (bcryptEncoder.matches(userDto.getPassword(), user.getPassword())) {
@@ -147,7 +152,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UserByMailExistsException();
         }
         UserDto userToRegister = new UserDto(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail());
-        userToRegister.setUserRoles(List.of(ROLE_USER));
         this.save(userToRegister);
 
         return registerUser;
