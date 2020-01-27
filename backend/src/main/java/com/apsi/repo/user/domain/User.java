@@ -20,8 +20,6 @@ public class User {
     private String password;
     @Column
     private String email;
-    @Column
-    private Integer points = 0;
 
     @ManyToMany
     @JoinTable(
@@ -30,8 +28,4 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private List<UserRole> userRoles;
-
-    public void addPoints(Integer points) {
-        this.points += points;
-    }
 }

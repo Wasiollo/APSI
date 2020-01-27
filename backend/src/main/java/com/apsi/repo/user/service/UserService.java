@@ -36,4 +36,6 @@ public interface UserService {
     List<UserRole> getAllRoles();
 
     User getCurrentUser();
+
+    void deleteUser(Long id);
 }

@@ -9,7 +9,7 @@ export class Test {
     status: string;
     owner: User;
     accepted: boolean;
-    specifications: Specs[];
+    specification: Specs[];
     documents: TestDocument[];
 }
 

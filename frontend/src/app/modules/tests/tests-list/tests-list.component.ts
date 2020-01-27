@@ -85,6 +85,7 @@ export class TestsListComponent implements OnInit {
 
     setAcceptedList(acc: boolean) {
         this.acceptedList = acc;
+        this.tests = [];
         if (acc) {
             this.getAllTests();
         } else {

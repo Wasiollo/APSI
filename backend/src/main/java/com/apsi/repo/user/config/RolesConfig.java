@@ -38,18 +38,11 @@ public class RolesConfig {
                     ,roleDao.findByRoleName(ROLE_TEST_SCENARIO_CREATOR.getRoleName()).orElseThrow()
             );
 
-            User savedAdminUser;
             if (userDao.findByUsername("admin").isEmpty()) {
                 UserDto adminUser = new UserDto("admin", "admin", "admin@admin.pl");
                 adminUser.setUserRoles(mainAdminRoles);
-                savedAdminUser = userService.save(adminUser);
-            } else {
-                UserDto existingAdmin = userService.getUserByUserName("admin");
-                existingAdmin.setPassword("admin");
-                existingAdmin.setUserRoles(mainAdminRoles);
-                savedAdminUser = userService.save(existingAdmin);
+                userService.save(adminUser);
             }
-            System.out.println(savedAdminUser);
 
         };
     }

@@ -65,8 +65,8 @@ public class TestsController {
     @PutMapping
     @ResponseStatus(code = HttpStatus.OK)
     @Secured({"ROLE_TESTER", "ROLE_TEST_LEADER"})
-    public TestInfoDto updateTest(@RequestBody Test toUpdate) {
-        return testsService.updateTest(toUpdate);
+    public TestInfoDto updateTestStatus(@RequestBody Test toUpdate) {
+        return testsService.updateTestStatus(toUpdate);
     }
 
     @GetMapping("/unaccepted")

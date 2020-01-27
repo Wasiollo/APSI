@@ -6,6 +6,8 @@ import com.apsi.repo.tests.dto.TestInfoDto;
 import com.apsi.repo.user.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,6 +36,7 @@ public class Test {
     private Boolean accepted = false;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User owner;
 
     @OneToMany(cascade = CascadeType.ALL)

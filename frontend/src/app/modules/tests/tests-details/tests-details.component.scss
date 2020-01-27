@@ -12,4 +12,6 @@ mat-form-field {
 
 .scrollable-content{
   max-height: 75vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

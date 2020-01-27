@@ -18,7 +18,7 @@ public interface TestsService {
 
     TestInfoDto createTest(TestDto dto);
 
-    TestInfoDto updateTest(Test toUpdate);
+    TestInfoDto updateTestStatus(Test toUpdate);
 
     List<TestStatus> getTestStatuses();
 

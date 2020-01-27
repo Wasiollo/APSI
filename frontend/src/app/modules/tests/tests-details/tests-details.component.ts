@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {TestService} from "../service/test.service";
-import {TestDocument, Test} from "../model/test.model";
-import {Validators} from "@angular/forms";
+import {Test, TestDocument} from "../model/test.model";
 import {OK} from "http-status-codes";
 import {ToastrService} from "ngx-toastr";
 
@@ -19,7 +18,7 @@ export class TestsDetailsComponent implements OnInit {
     filesToUpload: TestDocument[];
 
     constructor(private router: Router, private testService: TestService, private toastr: ToastrService) {
-        if (this.router.getCurrentNavigation().extras.state !== undefined && this.router.getCurrentNavigation().extras.state !== null){
+        if (this.router.getCurrentNavigation().extras.state !== undefined && this.router.getCurrentNavigation().extras.state !== null) {
             this.testId = this.router.getCurrentNavigation().extras.state.testId;
         } else {
             this.testId = null;
@@ -61,9 +60,9 @@ export class TestsDetailsComponent implements OnInit {
     }
 
     saveUploadedFiles() {
-        this.testService.uploadFiles(this.testId, this.filesToUpload).subscribe(data =>{
-            if (data.status === OK){
-                for (let file of this.filesToUpload){
+        this.testService.uploadFiles(this.testId, this.filesToUpload).subscribe(data => {
+            if (data.status === OK) {
+                for (let file of data.result) {
                     this.currentTest.documents.push(file);
                 }
                 this.toastr.success("File uploaded successfully");
@@ -81,5 +80,22 @@ export class TestsDetailsComponent implements OnInit {
                     this.currentTest.documents = this.currentTest.documents.filter(d => d !== doc);
                 });
         }
+    }
+
+    downloadDoc(doc: TestDocument) {
+        this.testService.downloadDocumentContent(this.currentTest.id, doc.id).subscribe(
+            data => {
+                if (data.status === OK) {
+                    let a = document.createElement('a');
+                    let e = document.createEvent('MouseEvents');
+                    a.download = doc.filename;
+                    a.href = data.result.data;
+                    e.initEvent('click', true, false);
+                    a.dispatchEvent(e);
+                } else {
+                    this.toastr.error("Error occurred downloading file");
+                }
+            }
+        );
     }
 }

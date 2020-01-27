@@ -4,6 +4,7 @@ import com.apsi.repo.tests.dto.DocumentDto;
 import com.apsi.repo.tests.dto.DocumentInfoDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 

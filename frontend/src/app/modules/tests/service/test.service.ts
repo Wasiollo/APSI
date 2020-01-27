@@ -66,7 +66,11 @@ export class TestService {
         return this.apiService.post(this.testsUrl + '/' + testId + '/documents', filesToUpload);
     }
 
-    deleteTestDocument(testId: number, id: number) {
-        return this.apiService.delete(this.testsUrl + '/' + testId + '/documents/' + id)
+    deleteTestDocument(testId: number, id: number): Observable<ApiResponse> {
+        return this.apiService.delete(this.testsUrl + '/' + testId + '/documents/' + id);
+    }
+
+    downloadDocumentContent(testId: number, documentId: number): Observable<ApiResponse> {
+        return this.apiService.get(this.testsUrl + '/' + testId + '/documents/' + documentId);
     }
 }

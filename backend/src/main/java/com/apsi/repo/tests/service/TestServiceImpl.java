@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Transactional
 public class TestServiceImpl implements TestsService {
 
     private final TestDao testDao;
@@ -59,9 +60,11 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    public TestInfoDto updateTest(Test toUpdate) {
-        toUpdate.setUpdateDate(LocalDateTime.now());
-        return testDao.save(toUpdate).toTestInfoDto();
+    public TestInfoDto updateTestStatus(Test updateData) {
+        Test updatedTest = testDao.findById(updateData.getId()).orElseThrow();
+        updatedTest.setStatus(updateData.getStatus());
+        updatedTest.setUpdateDate(LocalDateTime.now());
+        return updatedTest.toTestInfoDto();
     }
 
     @Override
@@ -80,7 +83,6 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    @Transactional
     public TestInfoDto acceptTest(Long testId) {
         Test testToAccept = testDao.findById(testId).orElseThrow();
         testToAccept.setAccepted(true);
@@ -93,7 +95,6 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    @Transactional
     public List<DocumentInfoDto> createDocuments(Long testId, List<DocumentDto> dtos) {
         List<Document> documents = dtos.stream()
                 .map(documentDto -> documentDao.save(new Document(documentDto)))
@@ -103,7 +104,6 @@ public class TestServiceImpl implements TestsService {
     }
 
     @Override
-    @Transactional
     public void deleteDocument(Long testId, Long documentId) {
         testDao.findByIdOrThrow(testId).deleteDocument(documentId);
         documentDao.deleteById(documentId);
